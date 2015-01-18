@@ -1,0 +1,28 @@
+{
+  "name": "SpaceSuit",
+  "version": "1.0.0",
+  "description": "",
+  "dependencies": {
+    "lodash": "^2.4.1"
+  },
+  "scripts": {
+    "clean": "rm -r build",
+    "copy:index": "cp src/index.html build/",
+    "copy:assets": "cp -r src/assets build/",
+    "copy:lib": "cp -r src/lib build/",
+    "copy": "npm run copy:index && npm run copy:assets && npm run copy:lib",
+    "build": "browserify -o build/bundle.js -e src/index.js",
+    "watch": "watchify -v -o build/bundle.js -e src/index.js",
+    "browser": "browser-sync start --files \"build/assets/*, build/*.html, build/*.js\" --server build",
+    "precopy": "mkdir -p build",
+    "prebuild": "npm run copy",
+    "prebrowser": "npm run copy && npm run lint"
+  },
+  "author": "Samuel El-Borai aka dgellow <samuel.elborai@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "browser-sync": "^1.9.0",
+    "browserify": "^8.1.1",
+    "watchify": "^2.2.1"
+  }
+}
