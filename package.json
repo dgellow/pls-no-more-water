@@ -1,6 +1,6 @@
 {
-  "name": "SpaceSuit",
-  "version": "1.0.0",
+  "name": "PleaseNoMoreWater",
+  "version": "0.0.1",
   "description": "",
   "dependencies": {
     "lodash": "^2.4.1"
@@ -18,8 +18,6 @@
     "prebuild": "npm run copy",
     "prebrowser": "npm run copy && npm run lint"
   },
-  "author": "Samuel El-Borai aka dgellow <samuel.elborai@gmail.com>",
-  "license": "MIT",
   "devDependencies": {
     "browser-sync": "^1.9.0",
     "browserify": "^8.1.1",
