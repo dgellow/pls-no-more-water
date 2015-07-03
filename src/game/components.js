@@ -1,8 +1,11 @@
+import Game from './game';
+import _ from 'lodash';
+
 /* jshint esnext: true */
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('2D, Canvas, SpriteAnimation, sprite_player, Collision, Gravity, Twoway')
+            this.requires('2D, Canvas, SpriteAnimation, sprite_player_good, Collision, Gravity, Twoway, Phase')
                 .checkHits('Solid')
                 .bind('HitOn', bindHitOn)
                 .bind('HitOff', bindHitOff)
@@ -10,8 +13,9 @@ function componentPlayer() {
                 .animate('PlayerWalking', -1)
                 .gravity('Solid')
                 .gravityConst(0.4)
-                .twoway(4, 7);
-                .setPhaseSprites("sprite1", "sprite2")
+                .twoway(4, 7)
+                .setPhaseSprite("sprite_player_good", "sprite_player_evil")
+                .bind('changePhase', this.applyPhase);
         },
         bindHitOn = function(data) {
             console.log("Hit on");
@@ -45,19 +49,55 @@ Crafty.c('Solid', componentSolid());
 
 //Phase Component
 function componentPhase() {
-    var that = {};
-    that.setPhaseSprite = function(evil, good) {
-        that._evilSprite = evil;
-        that._goodSprite = good;
-    };
-    that.applyPhase = function(phase) {
+    var that = {},
+    setPhaseSprite = function(evil, good) {
+        this._evilSprite = evil;
+        this._goodSprite = good;
+        return this;
+    },
+    applyPhase = function(phase) {
+        console.log('Phase: ', phase);
         if (phase == "evil") {
-            this._sprite = that._evilSprite;
+            swapSprite(this, this._evilSprite);
         } else {
-            this._sprit = that._goodSprite;
+            swapSprite(this, this._goodSprite);
         }
-    }
+        return this;
+    };
+
+    that.applyPhase = applyPhase;
+    that.setPhaseSprite = setPhaseSprite;
     return that;
 }
 
 Crafty.c('Phase', componentPhase());
+
+function swapSprite(entity, newSprite) {
+    console.log('Entity:', entity);
+     _.chain(_.keys(entity.__c)).filter((c) => {
+         return c.substring(0, 7) === 'sprite_';
+     })
+     .forEach((c) => {
+         console.log('Component:', c);
+         entity.removeComponent(c, false);
+     });
+
+     entity.requires(newSprite);
+     return entity;
+}
+//
+// function componentEventDispatch() {
+//     var that = {},
+//     init = function() {
+//         this.requires('2D, Canvas, Keyboard')
+//             .bind('KeyDown', (e) => {
+//                 console.log('event: ', e);
+//                 if (e.key == Crafty.keys.SHIFT) {
+//                     Crafty.trigger('changePhase', Game.shiftPhase());
+//                 }
+//             })
+//     }
+//     return that;
+// }
+//
+// Crafty.c('EventDispatch', componentEventDispatch());

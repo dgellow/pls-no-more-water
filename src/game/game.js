@@ -21,9 +21,14 @@ function createGame(props) {
             Crafty.init(5000, 600);
             Crafty.viewport.init(667, 500);
             Crafty.scene('Loading');
+        },
+        shiftPhase = function() {
+            that.phase = (that.phase == 'good') ? 'evil' : 'good';
+            return that.phase;
         };
 
     that.start = start;
+    that.shiftPhase = shiftPhase;
     return that;
 }
 
