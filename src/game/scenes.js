@@ -7,7 +7,7 @@ function enterGame() {
     var p = Crafty.e('Player').attr({x: 0, y: 5});
     Crafty.viewport.follow(p);
 
-    Crafty.e('Solid').attr({x: 0, y: 0, w: 5000});
+    Crafty.e('Platform').attr({x: 0, y: 0, w: 5000});
 
     Crafty.e('Keyboard').bind('KeyDown', (e) => {
         switch (e.key) {
@@ -41,7 +41,8 @@ let objAssets = {
             tile: 155,
             tileh: 21,
             map: {
-                sprite_platform: [0, 0]
+                sprite_platform_good: [0, 0],
+                sprite_platform_evil: [0, 1]
             }
         }
     }

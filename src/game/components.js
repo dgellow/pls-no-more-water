@@ -36,7 +36,7 @@ Crafty.c('Player', componentPlayer());
 function componentSolid() {
     var that = {},
         init = function() {
-            this.requires('2D, Canvas, Collision, sprite_platform')
+            this.requires('2D, Canvas, Collision')
                 .attr({h: 21})
                 .collision();
         };
@@ -47,8 +47,21 @@ function componentSolid() {
 
 Crafty.c('Solid', componentSolid());
 
+function componentPlatform() {
+    var that = {},
+        init = function() {
+            this.requires('Solid, Phase, sprite_platform_good')
+                .setEvilSprite('sprite_platform_evil')
+                .setGoodSprite('sprite_platform_good')
+                .bind('changePhase', this.applyPhase);
+        };
 
-//Phase Component
+    that.init = init;
+    return that;
+}
+
+Crafty.c('Platform', componentPlatform());
+
 function componentPhase() {
     var that = {},
         setEvilSprite = function(sprite) {
@@ -78,7 +91,8 @@ function componentPhase() {
 Crafty.c('Phase', componentPhase());
 
 function swapSprite(entity, newSprite) {
-    console.log('Entity:', entity);
+    let {w, h} = entity;
+
     _.chain(_.keys(entity.__c))
         .filter((c) => {
             return c.substring(0, 7) === 'sprite_';
@@ -89,5 +103,6 @@ function swapSprite(entity, newSprite) {
         });
 
     entity.requires(newSprite);
+    entity.attr({w, h});
     return entity;
 }
