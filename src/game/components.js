@@ -9,7 +9,7 @@ function componentPlayer() {
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
                 .gravity('Solid')
-                .gravityConst(0.1)
+                .gravityConst(0.4)
                 .twoway(4, 7);
         },
         bindHitOn = function(data) {
