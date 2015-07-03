@@ -1,3 +1,4 @@
+/* jshint esnext: true */
 function componentPlayer() {
     var that = {},
         init = function() {

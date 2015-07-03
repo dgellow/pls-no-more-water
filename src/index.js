@@ -1,4 +1,5 @@
-var Game = require('./game/game');
+/* jshint esnext: true */
+import Game from './game/game';
 
 document.addEventListener('DOMContentLoaded', function() {
     require('./game/scenes.js');

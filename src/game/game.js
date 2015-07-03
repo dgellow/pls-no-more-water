@@ -1,4 +1,5 @@
-var gameProperties = {
+/* jshint esnext: true */
+let gameProperties = {
     textStyle:  {
         'font-size': '24px',
         'font-family': 'Arial',

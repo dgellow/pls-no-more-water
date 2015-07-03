@@ -1,5 +1,6 @@
-var Game = require('./game');
-var _ = require('lodash');
+/* jshint esnext: true */
+let Game = require('./game');
+let _ = require('lodash');
 
 // Game scene
 function enterGame() {
@@ -19,7 +20,7 @@ function enterGame() {
 Crafty.scene('Game', enterGame);
 
 // Loading scene
-var objAssets = {
+let objAssets = {
     sprites: {
         'assets/space-suit.png': {
             tile: 30,
