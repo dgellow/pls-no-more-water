@@ -1,7 +1,7 @@
+/* jshint esnext: true */
 import Game from './game';
 import _ from 'lodash';
 
-/* jshint esnext: true */
 function componentPlayer() {
     var that = {},
         init = function() {
