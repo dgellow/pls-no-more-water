@@ -4,17 +4,10 @@ let _ = require('lodash');
 
 // Game scene
 function enterGame() {
-    var p = Crafty.e('Player').attr({x: 0, y: 10});
+    var p = Crafty.e('Player').attr({x: 0, y: 5});
     Crafty.viewport.follow(p);
 
-    Crafty.e('Solid').attr({x: 0, y: 0, w: 200});
-    Crafty.e('Solid').attr({x: 300, y: 0, w: 250});
-
-    _.range(-2, -1000, -1.1).forEach(function(n) {
-        Crafty.e('Solid').attr({x: (300 * Math.random()),
-                                y: (n * 100) + (100 * Math.random()),
-                                w:  20 + (100 * Math.random())});
-    });
+    Crafty.e('Solid').attr({x: 0, y: 0, w: 5000});
 }
 
 Crafty.scene('Game', enterGame);

@@ -16,7 +16,7 @@ let gameProperties = {
 function createGame(props) {
     var that = props,
         start = function() {
-            Crafty.init(500, 1000);
+            Crafty.init(5000, 600);
             Crafty.viewport.init(667, 500);
             Crafty.scene('Loading');
         };
