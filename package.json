@@ -16,7 +16,7 @@
     "browser": "browser-sync start --files \"build/assets/*, build/*.html, build/*.js\" --server build",
     "precopy": "mkdir -p build",
     "prebuild": "npm run copy",
-    "prebrowser": "npm run copy && npm run lint"
+    "prebrowser": "npm run copy"
   },
   "devDependencies": {
     "browser-sync": "^1.9.0",
