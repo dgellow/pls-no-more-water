@@ -7,6 +7,8 @@ let gameProperties = {
         'text-align': 'center'
     },
 
+    phase: 'good',
+
     player: {
         x: 5,
         y: 2
