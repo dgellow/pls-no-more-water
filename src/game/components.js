@@ -14,7 +14,8 @@ function componentPlayer() {
                 .gravity('Solid')
                 .gravityConst(0.4)
                 .twoway(4, 7)
-                .setPhaseSprite("sprite_player_good", "sprite_player_evil")
+                .setEvilSprite('sprite_player_evil')
+                .setGoodSprite('sprite_player_good')
                 .bind('changePhase', this.applyPhase);
         },
         bindHitOn = function(data) {
@@ -50,23 +51,27 @@ Crafty.c('Solid', componentSolid());
 //Phase Component
 function componentPhase() {
     var that = {},
-    setPhaseSprite = function(evil, good) {
-        this._evilSprite = evil;
-        this._goodSprite = good;
-        return this;
-    },
-    applyPhase = function(phase) {
-        console.log('Phase: ', phase);
-        if (phase == "evil") {
-            swapSprite(this, this._evilSprite);
-        } else {
-            swapSprite(this, this._goodSprite);
-        }
-        return this;
-    };
+        setEvilSprite = function(sprite) {
+            this._evilSprite = sprite;
+            return this;
+        },
+        setGoodSprite = function(sprite) {
+            this._goodSprite = sprite;
+            return this;
+        },
+        applyPhase = function(phase) {
+            console.log('Phase: ', phase);
+            if (phase == "evil") {
+                swapSprite(this, this._evilSprite);
+            } else {
+                swapSprite(this, this._goodSprite);
+            }
+            return this;
+        };
 
     that.applyPhase = applyPhase;
-    that.setPhaseSprite = setPhaseSprite;
+    that.setGoodSprite = setGoodSprite;
+    that.setEvilSprite = setEvilSprite;
     return that;
 }
 
