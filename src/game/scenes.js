@@ -8,11 +8,14 @@ function enterGame() {
     Crafty.viewport.follow(p);
 
     Crafty.e('Solid').attr({x: 0, y: 0, w: 5000});
+
     Crafty.e('Keyboard').bind('KeyDown', (e) => {
-        if (e.key == Crafty.keys.SHIFT) {
+        switch (e.key) {
+        case Crafty.keys.SHIFT:
             Crafty.trigger('changePhase', Game.shiftPhase());
+            break;
         }
-    })
+    });
 }
 
 Crafty.scene('Game', enterGame);

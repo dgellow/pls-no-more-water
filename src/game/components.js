@@ -79,30 +79,15 @@ Crafty.c('Phase', componentPhase());
 
 function swapSprite(entity, newSprite) {
     console.log('Entity:', entity);
-     _.chain(_.keys(entity.__c)).filter((c) => {
-         return c.substring(0, 7) === 'sprite_';
-     })
-     .forEach((c) => {
-         console.log('Component:', c);
-         entity.removeComponent(c, false);
-     });
+    _.chain(_.keys(entity.__c))
+        .filter((c) => {
+            return c.substring(0, 7) === 'sprite_';
+        })
+        .forEach((c) => {
+            console.log('Component:', c);
+            entity.removeComponent(c, false);
+        });
 
-     entity.requires(newSprite);
-     return entity;
+    entity.requires(newSprite);
+    return entity;
 }
-//
-// function componentEventDispatch() {
-//     var that = {},
-//     init = function() {
-//         this.requires('2D, Canvas, Keyboard')
-//             .bind('KeyDown', (e) => {
-//                 console.log('event: ', e);
-//                 if (e.key == Crafty.keys.SHIFT) {
-//                     Crafty.trigger('changePhase', Game.shiftPhase());
-//                 }
-//             })
-//     }
-//     return that;
-// }
-//
-// Crafty.c('EventDispatch', componentEventDispatch());
