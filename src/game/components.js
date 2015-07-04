@@ -10,7 +10,6 @@ function componentPlayer() {
                 .animate('PlayerWalking', -1)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
-                .bind('changePhase', this.applyPhase)
                 .controls(4)
                 .onContact('Wave', hitWave);
         },
@@ -78,8 +77,7 @@ function componentPlatform() {
         init = function() {
             this.requires('Solid, Phase, sprite_platform_good')
                 .setEvilSprite('sprite_platform_evil')
-                .setGoodSprite('sprite_platform_good')
-                .bind('changePhase', this.applyPhase);
+                .setGoodSprite('sprite_platform_good');
         };
 
     that.init = init;
@@ -90,6 +88,9 @@ Crafty.c('Platform', componentPlatform());
 
 function componentPhase() {
     var that = {},
+        init = function() {
+            this.bind('changePhase', applyPhase);
+        },
         setEvilSprite = function(sprite) {
             return this.attr({_evilSprite: sprite});
         },
@@ -107,7 +108,7 @@ function componentPhase() {
             return this;
         };
 
-    that.applyPhase = applyPhase;
+    that.init = init;
     that.setGoodSprite = setGoodSprite;
     that.setEvilSprite = setEvilSprite;
     return that;
