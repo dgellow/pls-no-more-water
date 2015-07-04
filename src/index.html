@@ -1,8 +1,27 @@
 <html>
   <head>
     <title>Please No More Water!</title>
+    <style>
+     #entity-debug {
+       position: absolute;
+       z-index: 99;
+       border-radius: 3px;
+       padding: 3px 10px;
+       font-size: 0.6rem;
+       font-family: monospace;
+       background: rgba(219, 216, 156, 0.85098);
+       display: none;
+     }
+    </style>
   </head>
   <body>
+      <div id="entity-debug"></div>
+      <h1>Please no more water!</h1>
+
+      <div id="cr-stage"></div>
+
+      <p class="bottom">By <a href="https://github.com/zhaar">André Videla</a> and <a href="https://github.com/dgellow">Samuel El-Borai</a>.</p>
+
       <script src="/lib/crafty-0.6.3.js" type="text/javascript"></script>
       <script src="/lib/Box2dWeb-2.1.a.3.js" type="text/javascript"></script>
       <script src="/lib/box2d.js" type="text/javascript"></script>

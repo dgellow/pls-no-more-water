@@ -1,10 +1,28 @@
 /* jshint esnext: true */
 let Game = require('./game');
-let _ = require('lodash');
+import _ from 'lodash';
+import {getEntitiesAt} from './helpers';
 
 let mouseEvents = {
     mousedown: function(ev) {
         console.log('mouseDown', ev);
+    },
+    mousemove: function(ev) {
+        var divDebug = document.getElementById('entity-debug');
+        divDebug.style.display = 'block';
+        divDebug.style.left = `${ev.x + 10}px`;
+        divDebug.style.top = `${ev.y + 10}px`;
+        divDebug.innerHTML = '';
+
+        let entity = getEntitiesAt(
+            ev.offsetX - Crafty.viewport.x, ev.offsetY - Crafty.viewport.y
+        );
+        if (entity) {
+            divDebug.innerHTML = `Position<br>x: ${entity.x}<br>y: ${entity.y}`;
+            divDebug.innerHTML = `Size<br>h: ${entity.h}<br>w: ${entity.w}`;
+            let velocity = entity.body.GetLinearVelocity();
+            divDebug.innerHTML += `<br>Velocity<br>x: ${velocity.x}<br>y: ${velocity.y}`;
+        }
     }
 };
 
