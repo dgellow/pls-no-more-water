@@ -29,7 +29,7 @@ function componentControllable() {
             this.bind('KeyDown', (ev) => {
                 var vec = this.body.GetLinearVelocity(),
                     vy = vec.y;
-;
+
                 switch(ev.keyCode) {
                 case Crafty.keys.LEFT_ARROW:
                     vec = new b2Vec2(-speed, vy);
