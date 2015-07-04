@@ -6,7 +6,7 @@ let _ = require('lodash');
 function enterGame() {
     // Player
     var p = Crafty.e('Player')
-            .controls(30)
+            .controls(4)
             .setMetrics({x: 100, y: -200}, {
                 bodyType: 'dynamic',
                 density : 10,
@@ -16,7 +16,7 @@ function enterGame() {
     Crafty.viewport.follow(p);
 
     // Platforms
-    Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 50000});
+    Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 5000});
 
     // Tools
     Crafty.e('Hook');

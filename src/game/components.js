@@ -26,8 +26,9 @@ function componentControllable() {
     var that = {},
         controls = function(speed) {
             this.bind('KeyDown', (ev) => {
-                var vy = this.body.GetLinearVelocity().y,
-                    vec = this.body.GetLinearVelocity();
+                var vec = this.body.GetLinearVelocity(),
+                    vy = vec.y;
+;
                 switch(ev.keyCode) {
                 case Crafty.keys.LEFT_ARROW:
                     vec = new b2Vec2(-speed, vy);
@@ -40,8 +41,8 @@ function componentControllable() {
             });
 
             this.bind('KeyUp', (ev) => {
-                var vy = this.body.GetLinearVelocity().y,
-                    vec = this.body.GetLinearVelocity();
+                var vec = this.body.GetLinearVelocity(),
+                    vy = vec.y;
                 switch(ev.keyCode) {
                 case Crafty.keys.LEFT_ARROW:
                     vec = new b2Vec2(0, vy);
@@ -72,7 +73,7 @@ function componentSolid() {
                 .box2d(optBox2DProps || {
                     bodyType: 'static',
                     density: 1.0,
-                    friction: 0.01,
+                    friction: 0,
                     restitution: 0
                 });
         };
@@ -223,7 +224,6 @@ function swapSprite(entity, newSprite) {
             return c.substring(0, 7) === 'sprite_';
         })
         .forEach((c) => {
-            console.log('Component:', c);
             entity.removeComponent(c, false);
         });
 
