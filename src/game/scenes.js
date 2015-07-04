@@ -17,37 +17,6 @@ function enterGame() {
 
     // Platforms
     Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 50000});
-    // _.range(1, 20).forEach((x) => {
-    //     _.range(1, 20).forEach((y) => {
-    //         Crafty.e('Platform')
-    //             .setMetrics({
-    //                 x: 300 + (30 * x),
-    //                 y: -(30 * y),
-    //                 w: 5,
-    //                 h: 5
-    //             }, {
-    //                 bodyType: 'dynamic',
-    //                 density : 10,
-    //                 friction : 40
-    //             });
-    //     });
-    // });
-
-    // _.range(1, 20).forEach((x) => {
-    //     _.range(1, 20).forEach((y) => {
-    //         Crafty.e('Platform')
-    //             .setMetrics({
-    //                 x: 300 + (30 * x),
-    //                 y: -(30 * y),
-    //                 w: 10,
-    //                 h: 10
-    //             }, {
-    //                 bodyType: 'dynamic',
-    //                 density : 10,
-    //                 friction : 40
-    //             });
-    //     });
-    // });
 
     // Tools
     Crafty.e('Hook');
