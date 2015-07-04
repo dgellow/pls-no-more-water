@@ -199,9 +199,20 @@ function componentDash() {
     var that = {},
         init = function() {
             this.requires('Tool, RespondToMouseDown')
+                .attr({_intensity: 500})
                 .cooldown(10)
-                .setAction( (ev) => {
+                .setAction((ev) => {
+                    let mouseX = ev.offsetX - Crafty.viewport.x,
+                        mouseY = ev.offsetY - Crafty.viewport.y,
+                        player = Crafty('Player'),
+                        vec = new b2Vec2(mouseX - player.x,
+                                         mouseY - player.y);
+                    vec.Normalize();
+                    vec.Multiply(this._intensity);
 
+                    player.body.ApplyImpulse(
+                        vec, player.body.GetWorldCenter()
+                    );
                 })
                 .action(() => {
                     console.log('DASHING! NICEINOU!');
