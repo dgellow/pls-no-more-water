@@ -78,7 +78,7 @@ function componentCooldown() {
             }, this.cooldownDuration);
         },
         progressCooldown = function() {
-            this.currentDuration -= timeframe
+            this.currentDuration -= timeframe;
         },
         setCooldownDuration = function(millis) {
             return this.attr({cooldownDuration: millis,
@@ -89,12 +89,16 @@ function componentCooldown() {
         },
         setEndCallback = function(cb) {
             return this.attr({endCallback: cb});
+        },
+        getProgress = function() {
+            return this.currentDuration / this.cooldownDuration;
         };
 
-    that.runCooldown = runCooldown
-    that.setCooldownDuration = setCooldownDuration
-    that.setInitialCallback = setInitialCallback
-    that.setEndCallback = setEndCallback
+    that.runCooldown = runCooldown;
+    that.setCooldownDuration = setCooldownDuration;
+    that.setInitialCallback = setInitialCallback;
+    that.setEndCallback = setEndCallback;
+    that.getProgress = getProgress;
     return that;
 }
 
@@ -190,7 +194,7 @@ function componentTool() {
                 .attr({
                     _usable: true
                 })
-                .setCooldownDuration(5000)
+                .setCooldownDuration(2000)
                 .setInitialCallback(() => { console.log('tool unusable');this._usable = false })
                 .setEndCallback(() => { console.log('tool usable'); this._usable = true });
         };
