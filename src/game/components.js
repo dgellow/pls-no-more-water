@@ -89,9 +89,7 @@ Crafty.c('Solid', componentSolid());
 function componentPlatform() {
     var that = {},
         init = function() {
-            this.requires('Solid, Phase, sprite_platform_good')
-                .setEvilSprite('sprite_platform_evil')
-                .setGoodSprite('sprite_platform_good');
+            this.requires('Solid, Phase');
         };
 
     that.init = init;
@@ -109,6 +107,7 @@ function componentPhase() {
             return this.attr({_evilSprite: sprite});
         },
         setGoodSprite = function(sprite) {
+            swapSprite(this, sprite);
             return this.attr({_goodSprite: sprite});
         },
         applyPhase = function(phase) {

@@ -10,7 +10,7 @@ let globalEvents = {
         }
     },
     mousedown: (ev) => {
-        console.log('mouseDown', ev);
+        Crafty.trigger('customMouseDown', ev);
     },
     mousemove: (ev) => {
         var divDebug = document.getElementById('entity-debug');
