@@ -64,6 +64,42 @@ function componentControllable() {
 
 Crafty.c('Controllable', componentControllable());
 
+function componentCooldown() {
+    let timeframe = 30;
+    var that = {},
+        runCooldown = function(initialParam, endParams) {
+            this.initialCallback(initialParam);
+            let interval = setInterval(progressCooldown, timeframe);
+            let self = this;
+            setTimeout(function() {
+                clearInterval(interval);
+                self.currentDuration = self.cooldownDuration;
+                self.endCallback(endParams);
+            }, this.cooldownDuration);
+        },
+        progressCooldown = function() {
+            this.currentDuration -= timeframe
+        },
+        setCooldownDuration = function(millis) {
+            return this.attr({cooldownDuration: millis,
+                              currentDuration: millis});
+        },
+        setInitialCallback = function(cb) {
+            return this.attr({initialCallback: cb});
+        },
+        setEndCallback = function(cb) {
+            return this.attr({endCallback: cb});
+        };
+
+    that.runCooldown = runCooldown
+    that.setCooldownDuration = setCooldownDuration
+    that.setInitialCallback = setInitialCallback
+    that.setEndCallback = setEndCallback
+    return that;
+}
+
+Crafty.c('Cooldown', componentCooldown());
+
 function componentSolid() {
     var that = {},
         init = function() {
@@ -150,29 +186,15 @@ Crafty.c('RespondToMouseDown', componentCustomMouseDown());
 function componentTool() {
     var that = {},
         init = function() {
-            this.requires('Keyboard')
+            this.requires('Keyboard, Cooldown')
                 .attr({
-                    _cooldown: 5
-                });
-        },
-        cooldown = function(seconds) {
-            return this.attr({_cooldown: seconds});
-        },
-        action = function(fn) {
-            return this.attr({_action: fn});
-        },
-        onKey = function(keyCode) {
-            return this.bind('KeyDown', (ev) => {
-                if (ev.keyCode === keyCode) {
-                    this._action();
-                }
-            });
+                    _usable: true
+                })
+                .setCooldownDuration(5000)
+                .setInitialCallback(() => { console.log('tool unusable');this._usable = false })
+                .setEndCallback(() => { console.log('tool usable'); this._usable = true });
         };
-
     that.init = init;
-    that.cooldown = cooldown;
-    that.action = action;
-    that.onKey = onKey;
     return that;
 }
 
@@ -182,11 +204,6 @@ function componentHook() {
     var that = {},
         init = function() {
             this.requires('Tool')
-                .cooldown(10)
-                .action(() => {
-                    console.log('Action HOOKED! DUDIDOU!');
-                })
-                .onKey(Crafty.keys.ENTER);
         };
 
     that.init = init;
@@ -200,24 +217,22 @@ function componentDash() {
         init = function() {
             this.requires('Tool, RespondToMouseDown')
                 .attr({_intensity: 500})
-                .cooldown(10)
                 .setAction((ev) => {
-                    let mouseX = ev.offsetX - Crafty.viewport.x,
-                        mouseY = ev.offsetY - Crafty.viewport.y,
-                        player = Crafty('Player'),
-                        vec = new b2Vec2(mouseX - player.x,
-                                         mouseY - player.y);
-                    vec.Normalize();
-                    vec.Multiply(this._intensity);
+                    if (this._usable) {
+                        let mouseX = ev.offsetX - Crafty.viewport.x,
+                            mouseY = ev.offsetY - Crafty.viewport.y,
+                            player = Crafty('Player'),
+                            vec = new b2Vec2(mouseX - player.x,
+                                             mouseY - player.y);
+                        vec.Normalize();
+                        vec.Multiply(this._intensity);
 
-                    player.body.ApplyImpulse(
-                        vec, player.body.GetWorldCenter()
-                    );
+                        player.body.ApplyImpulse(
+                            vec, player.body.GetWorldCenter()
+                        );
+                        this.runCooldown();
+                    }
                 })
-                .action(() => {
-                    console.log('DASHING! NICEINOU!');
-                })
-                .onKey(Crafty.keys.SPACE);
         };
 
     that.init = init;
