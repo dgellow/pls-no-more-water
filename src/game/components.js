@@ -57,7 +57,7 @@ function componentSolid() {
             this.requires('2D, Canvas, Box2D');
         },
         setMetrics = function(props, optBox2DProps) {
-            return this.attr(props)
+          return this.attr(props)
                 .box2d(optBox2DProps || {
                     bodyType: 'static',
                     density: 1.0,
@@ -186,9 +186,14 @@ function componentWave() {
             this.requires('Solid, sprite_wave_good, Phase')
                 .setGoodSprite('sprite_wave_good')
                 .setEvilSprite('sprite_wave_evil');
+        },
+        setSpeed = function(speed) {
+            this.body.SetLinearVelocity(new b2Vec2(speed, 0));
+            return this;
         };
 
     that.init = init;
+    that.setSpeed = setSpeed;
     return that;
 }
 

@@ -21,12 +21,14 @@ function enterGame() {
     Crafty.e('Dash');
 
     // Wave
-    Crafty.e('Wave').setMetrics({x: 0, y: -70}, {
-        bodyType: 'kinematic',
-        density : 10,
-        friction : 30,
-        restitution : 0.1
-    });
+    Crafty.e('Wave')
+        .setMetrics({x: 0, y: -200, h: 200}, {
+            bodyType: 'kinematic',
+            density : 10,
+            friction : 30,
+            restitution : 0.1
+        })
+        .setSpeed(2);
 
     // Global events
     Crafty.e('Keyboard').bind('KeyDown', (e) => {
