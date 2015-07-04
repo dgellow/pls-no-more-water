@@ -64,7 +64,7 @@ function componentSolid() {
             this.requires('2D, Canvas, Box2D');
         },
         setMetrics = function(props, optBox2DProps) {
-            this.attr(props)
+            return this.attr(props)
                 .box2d(optBox2DProps || {
                     bodyType: 'static',
                     density: 1.0,
@@ -98,15 +98,14 @@ Crafty.c('Platform', componentPlatform());
 function componentPhase() {
     var that = {},
         setEvilSprite = function(sprite) {
-            this._evilSprite = sprite;
-            return this;
+            return this.attr({_evilSprite: sprite});
         },
         setGoodSprite = function(sprite) {
-            this._goodSprite = sprite;
-            return this;
+            return this.attr({_goodSprite: sprite});
         },
         applyPhase = function(phase) {
             console.log('Phase: ', phase);
+
             if (phase == "evil") {
                 swapSprite(this, this._evilSprite);
             } else {
@@ -126,23 +125,23 @@ Crafty.c('Phase', componentPhase());
 function componentTool() {
     var that = {},
         init = function() {
-            this.requires('Keyboard');
+            this.requires('Keyboard')
+                .attr({
+                    _cooldown: 5
+                });
         },
         cooldown = function(seconds) {
-            this._cooldown = seconds;
-            return this;
+            return this.attr({_cooldown: seconds});
         },
         action = function(fn) {
-            this._action = fn;
-            return this;
+            return this.attr({_action: fn});
         },
         onKey = function(keyCode) {
-            this.bind('KeyDown', (ev) => {
+            return this.bind('KeyDown', (ev) => {
                 if (ev.keyCode === keyCode) {
                     this._action();
                 }
             });
-            return this;
         };
 
     that.init = init;
