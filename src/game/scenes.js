@@ -67,12 +67,18 @@ let objAssets = {
                 sprite_platform_evil: [0, 1]
             }
         },
-        'assets/wave.png': {
+        'assets/wave-good.png': {
             tile: 61,
             tileh: 70,
             map: {
-                sprite_wave_good: [0, 0],
-                sprite_wave_evil: [0, 1]
+                sprite_wave_good: [0, 0]
+            }
+        },
+        'assets/wave-evil.png': {
+            tile: 61,
+            tileh: 70,
+            map: {
+                sprite_wave_evil: [0, 0]
             }
         }
     }

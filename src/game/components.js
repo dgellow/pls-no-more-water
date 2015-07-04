@@ -5,7 +5,7 @@ import _ from 'lodash';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable')
+            this.requires('Solid, SpriteAnimation , Keyboard, sprite_player_good, Phase, Controllable')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
                 .setEvilSprite('sprite_player_evil')
@@ -184,7 +184,9 @@ Crafty.c('Dash', componentDash());
 function componentWave() {
     var that = {},
         init = function() {
-            this.requires('Solid, sprite_wave_good, Phase')
+            this.requires('Solid, SpriteAnimation, sprite_wave_good, Phase')
+                .reel('WaveAnimation', 350, 0, 0, 3)
+                .animate('WaveAnimation', -1)
                 .setGoodSprite('sprite_wave_good')
                 .setEvilSprite('sprite_wave_evil');
         },
