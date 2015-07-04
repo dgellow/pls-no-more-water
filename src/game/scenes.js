@@ -2,6 +2,12 @@
 let Game = require('./game');
 let _ = require('lodash');
 
+let mouseEvents = {
+    mousedown: function(ev) {
+        console.log('mouseDown', ev);
+    }
+};
+
 // Game scene
 function enterGame() {
     // Player
@@ -42,11 +48,6 @@ function enterGame() {
             }
         });
     // Global mouse events
-    var mouseEvents = {
-        mousedown: function(ev) {
-            console.log('mouseDown', ev);
-        }
-    };
     Object.keys(mouseEvents).forEach((evName) => {
         Crafty.addEvent('', Crafty.stage.elem,
                         evName, mouseEvents[evName]);
@@ -54,7 +55,14 @@ function enterGame() {
 
 }
 
-Crafty.scene('Game', enterGame);
+function leaveGame() {
+    Object.keys(mouseEvents).forEach((evName) => {
+        Crafty.removeEvent('', Crafty.stage.elem,
+                           evName, mouseEvents[evName]);
+    });
+}
+
+Crafty.scene('Game', enterGame, leaveGame);
 
 // Loading scene
 let objAssets = {
