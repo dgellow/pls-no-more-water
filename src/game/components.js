@@ -123,6 +123,72 @@ function componentPhase() {
 
 Crafty.c('Phase', componentPhase());
 
+function componentTool() {
+    var that = {},
+        init = function() {
+            this.requires('Keyboard');
+        },
+        cooldown = function(seconds) {
+            this._cooldown = seconds;
+            return this;
+        },
+        action = function(fn) {
+            this._action = fn;
+            return this;
+        },
+        onKey = function(keyCode) {
+            this.bind('KeyDown', (ev) => {
+                if (ev.keyCode === keyCode) {
+                    this._action();
+                }
+            });
+            return this;
+        };
+
+    that.init = init;
+    that.cooldown = cooldown;
+    that.action = action;
+    that.onKey = onKey;
+    return that;
+}
+
+Crafty.c('Tool', componentTool());
+
+function componentHook() {
+    var that = {},
+        init = function() {
+            this.requires('Tool')
+                .cooldown(10)
+                .action(() => {
+                    console.log('Action HOOKED! DUDIDOU!');
+                })
+                .onKey(Crafty.keys.ENTER);
+        };
+
+    that.init = init;
+    return that;
+}
+
+Crafty.c('Hook', componentHook());
+
+function componentDash() {
+    var that = {},
+        init = function() {
+            this.requires('Tool')
+                .cooldown()
+                .action(() => {
+                    console.log('DASHING! NICEINOU!');
+                })
+                .onKey(Crafty.keys.SPACE);
+        };
+
+    that.init = init;
+    return that;
+}
+
+Crafty.c('Dash', componentDash());
+
+// Helpers
 function swapSprite(entity, newSprite) {
     let {w, h} = entity;
 

@@ -9,6 +9,9 @@ function enterGame() {
 
     Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 5000});
 
+    Crafty.e('Hook');
+    Crafty.e('Dash');
+
     Crafty.e('Keyboard').bind('KeyDown', (e) => {
         switch (e.key) {
         case Crafty.keys.SHIFT:
