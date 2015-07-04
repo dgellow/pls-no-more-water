@@ -5,13 +5,16 @@ import _ from 'lodash';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('Solid, SpriteAnimation , Keyboard, sprite_player_good, Phase, Controllable')
+            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable, Mouse')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
                 .controls(4)
-                .onContact('Wave', hitWave);
+                .onContact('Wave', hitWave)
+                .bind('MouseDown', function(e) {
+                    console.log('MouseDown', e);
+                });
         },
         hitWave = function(data) {
             console.log('Player#hitWave:', data);
@@ -37,7 +40,20 @@ function componentControllable() {
                     vec = new b2Vec2(speed, vy);
                     break;
                 }
+                this.body.SetLinearVelocity(vec);
+            });
 
+            this.bind('KeyUp', (ev) => {
+                var vy = this.body.GetLinearVelocity().y,
+                    vec = this.body.GetLinearVelocity();
+                switch(ev.keyCode) {
+                case Crafty.keys.LEFT_ARROW:
+                    vec = new b2Vec2(0, vy);
+                    break;
+                case Crafty.keys.RIGHT_ARROW:
+                    vec = new b2Vec2(0, vy);
+                    break;
+                }
                 this.body.SetLinearVelocity(vec);
             });
 
