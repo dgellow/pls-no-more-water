@@ -203,7 +203,6 @@ function componentDash() {
                 .cooldown(10)
                 .setAction( (ev) => {
 
-                    Crafty('Player').body.
                 })
                 .action(() => {
                     console.log('DASHING! NICEINOU!');
