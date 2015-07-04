@@ -15,11 +15,12 @@ let mouseEvents = {
         divDebug.innerHTML = '';
 
         let entity = getEntitiesAt(
-            ev.offsetX - Crafty.viewport.x, ev.offsetY - Crafty.viewport.y
+            ev.offsetX - Crafty.viewport.x,
+            ev.offsetY - Crafty.viewport.y
         );
         if (entity) {
             divDebug.innerHTML = `Position<br>x: ${entity.x}<br>y: ${entity.y}`;
-            divDebug.innerHTML = `Size<br>h: ${entity.h}<br>w: ${entity.w}`;
+            divDebug.innerHTML += `<br>Size<br>h: ${entity.h}<br>w: ${entity.w}`;
             let velocity = entity.body.GetLinearVelocity();
             divDebug.innerHTML += `<br>Velocity<br>x: ${velocity.x}<br>y: ${velocity.y}`;
         }
