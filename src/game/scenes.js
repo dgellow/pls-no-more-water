@@ -3,11 +3,17 @@ let Game = require('./game');
 import _ from 'lodash';
 import {getEntitiesAt} from './helpers';
 
-let mouseEvents = {
-    mousedown: function(ev) {
+let globalEvents = {
+    keydown: (e) => {
+        console.log(e);
+        if (e.shiftKey) {
+            Crafty.trigger('changePhase', Game.shiftPhase());
+        }
+    },
+    mousedown: (ev) => {
         console.log('mouseDown', ev);
     },
-    mousemove: function(ev) {
+    mousemove: (ev) => {
         var divDebug = document.getElementById('entity-debug');
         divDebug.style.display = 'block';
         divDebug.style.left = `${ev.x + 10}px`;
@@ -57,27 +63,17 @@ function enterGame() {
         })
         .setSpeed(0);
 
-    // Global keyboard events
-    Crafty.e('Keyboard')
-        .bind('KeyDown', (e) => {
-            switch (e.key) {
-            case Crafty.keys.SHIFT:
-                Crafty.trigger('changePhase', Game.shiftPhase());
-                break;
-            }
-        });
-    // Global mouse events
-    Object.keys(mouseEvents).forEach((evName) => {
+    // Global events
+    Object.keys(globalEvents).forEach((evName) => {
         Crafty.addEvent('', Crafty.stage.elem,
-                        evName, mouseEvents[evName]);
+                        evName, globalEvents[evName]);
     });
-
 }
 
 function leaveGame() {
-    Object.keys(mouseEvents).forEach((evName) => {
+    Object.keys(globalEvents).forEach((evName) => {
         Crafty.removeEvent('', Crafty.stage.elem,
-                           evName, mouseEvents[evName]);
+                           evName, globalEvents[evName]);
     });
 }
 
