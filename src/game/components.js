@@ -5,15 +5,12 @@ import _ from 'lodash';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable, Mouse')
+            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
-                .onContact('Wave', hitWave)
-                .bind('MouseDown', function(e) {
-                    console.log('MouseDown', e);
-                });
+                .onContact('Wave', hitWave);
         },
         hitWave = function(data) {
             console.log('Player#hitWave:', data);
