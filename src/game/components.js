@@ -5,14 +5,14 @@ import _ from 'lodash';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('2D, Canvas, SpriteAnimation, Box2D, sprite_player_good, Twoway, Phase')
+            this.requires('2D, Canvas, SpriteAnimation, Box2D, Keyboard, sprite_player_good, Phase, Controllable')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
                 .attr({y: -200})
-                .twoway(4, 7)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
                 .bind('changePhase', this.applyPhase)
+                .controls(4)
                 .box2d({
                     bodyType: 'dynamic',
                     density : 10,
@@ -22,7 +22,7 @@ function componentPlayer() {
                 .onContact('Solid', onContact);
         },
         onContact = function(data) {
-            console.log('onContact:', data);
+            //console.log('onContact:', data);
         };
 
     that.init = init;
@@ -30,6 +30,33 @@ function componentPlayer() {
 }
 
 Crafty.c('Player', componentPlayer());
+
+function componentControllable() {
+    var that = {},
+        controls = function(speed) {
+            this.bind('KeyDown', (ev) => {
+                var vy = this.body.GetLinearVelocity().y,
+                    vec = this.body.GetLinearVelocity();
+                switch(ev.keyCode) {
+                case Crafty.keys.LEFT_ARROW:
+                    vec = new b2Vec2(-speed, vy);
+                    break;
+                case Crafty.keys.RIGHT_ARROW:
+                    vec = new b2Vec2(speed, vy);
+                    break;
+                }
+
+                this.body.SetLinearVelocity(vec);
+            });
+
+            return this;
+        };
+
+    that.controls = controls;
+    return that;
+}
+
+Crafty.c('Controllable', componentControllable());
 
 function componentSolid() {
     var that = {},
