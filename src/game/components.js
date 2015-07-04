@@ -130,13 +130,31 @@ function componentPhase() {
 
 Crafty.c('Phase', componentPhase());
 
+function componentCustomMouseDown() {
+    var that = {},
+        init = function() {
+            this.bind('customMouseDown', performAction);
+        },
+        setAction = function(fn) {
+            return this.attr({_performAction: fn});
+        },
+        performAction = function(ev) {
+            this._performAction(ev);
+        };
+    that.init = init;
+    that.setAction = setAction;
+    return that;
+}
+
+Crafty.c('RespondToMouseDown', componentCustomMouseDown());
+
 function componentTool() {
     var that = {},
         init = function() {
             this.requires('Keyboard')
                 .attr({
                     _cooldown: 5
-                });
+                })
         },
         cooldown = function(seconds) {
             return this.attr({_cooldown: seconds});
@@ -181,8 +199,12 @@ Crafty.c('Hook', componentHook());
 function componentDash() {
     var that = {},
         init = function() {
-            this.requires('Tool')
-                .cooldown()
+            this.requires('Tool, RespondToMouseDown')
+                .cooldown(10)
+                .setAction( (ev) => {
+
+                    Crafty('Player').body.
+                })
                 .action(() => {
                     console.log('DASHING! NICEINOU!');
                 })
