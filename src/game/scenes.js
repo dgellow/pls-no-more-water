@@ -30,20 +30,28 @@ function enterGame() {
             friction : 30,
             restitution : 0
         })
-        .setSpeed(10);
+        .setSpeed(0);
 
-    // Global events
-    Crafty.e('Keyboard').bind('KeyDown', (e) => {
-        switch (e.key) {
-        case Crafty.keys.SHIFT:
-            Crafty.trigger('changePhase', Game.shiftPhase());
-            break;
+    // Global keyboard events
+    Crafty.e('Keyboard')
+        .bind('KeyDown', (e) => {
+            switch (e.key) {
+            case Crafty.keys.SHIFT:
+                Crafty.trigger('changePhase', Game.shiftPhase());
+                break;
+            }
+        });
+    // Global mouse events
+    var mouseEvents = {
+        mousedown: function(ev) {
+            console.log('mouseDown', ev);
         }
+    };
+    Object.keys(mouseEvents).forEach((evName) => {
+        Crafty.addEvent('', Crafty.stage.elem,
+                        evName, mouseEvents[evName]);
     });
 
-    Crafty.e('Mouse').bind('Click', (MouseEvent) => {
-        console.log('clicked', MouseEvent);
-    });
 }
 
 Crafty.scene('Game', enterGame);
