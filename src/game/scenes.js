@@ -1,37 +1,8 @@
 /* jshint esnext: true */
 let Game = require('./game');
 import _ from 'lodash';
-import {getEntitiesAt} from './helpers';
-
-let globalEvents = {
-    keydown: (e) => {
-        console.log(e);
-        if (e.shiftKey) {
-            Crafty.trigger('changePhase', Game.shiftPhase());
-        }
-    },
-    mousedown: (ev) => {
-        console.log('mouseDown', ev);
-    },
-    mousemove: (ev) => {
-        var divDebug = document.getElementById('entity-debug');
-        divDebug.style.display = 'block';
-        divDebug.style.left = `${ev.x + 10}px`;
-        divDebug.style.top = `${ev.y + 10}px`;
-        divDebug.innerHTML = '';
-
-        let entity = getEntitiesAt(
-            ev.offsetX - Crafty.viewport.x,
-            ev.offsetY - Crafty.viewport.y
-        );
-        if (entity) {
-            divDebug.innerHTML = `Position<br>x: ${entity.x}<br>y: ${entity.y}`;
-            divDebug.innerHTML += `<br>Size<br>h: ${entity.h}<br>w: ${entity.w}`;
-            let velocity = entity.body.GetLinearVelocity();
-            divDebug.innerHTML += `<br>Velocity<br>x: ${velocity.x}<br>y: ${velocity.y}`;
-        }
-    }
-};
+import {objAssets} from './assets';
+import {bindEvents, unbindEvents} from './events';
 
 // Game scene
 function enterGame() {
@@ -47,7 +18,8 @@ function enterGame() {
     Crafty.viewport.follow(p);
 
     // Platforms
-    Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 5000});
+    Crafty.e('Platform')
+        .setMetrics({x: 0, y: 0, w: 5000});
 
     // Tools
     Crafty.e('Hook');
@@ -63,18 +35,12 @@ function enterGame() {
         })
         .setSpeed(0);
 
-    // Global events
-    Object.keys(globalEvents).forEach((evName) => {
-        Crafty.addEvent('', Crafty.stage.elem,
-                        evName, globalEvents[evName]);
-    });
+    // Setup global events
+    bindEvents();
 }
 
 function leaveGame() {
-    Object.keys(globalEvents).forEach((evName) => {
-        Crafty.removeEvent('', Crafty.stage.elem,
-                           evName, globalEvents[evName]);
-    });
+    unbindEvents();
 }
 
 Crafty.scene('Game', enterGame, leaveGame);
