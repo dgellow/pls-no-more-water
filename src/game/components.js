@@ -153,7 +153,7 @@ function componentTool() {
             this.requires('Keyboard')
                 .attr({
                     _cooldown: 5
-                })
+                });
         },
         cooldown = function(seconds) {
             return this.attr({_cooldown: seconds});
