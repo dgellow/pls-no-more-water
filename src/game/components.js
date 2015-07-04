@@ -5,24 +5,17 @@ import _ from 'lodash';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('2D, Canvas, SpriteAnimation, Box2D, Keyboard, sprite_player_good, Phase, Controllable')
+            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
-                .attr({y: -200})
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
                 .bind('changePhase', this.applyPhase)
                 .controls(4)
-                .box2d({
-                    bodyType: 'dynamic',
-                    density : 10,
-                    friction : 30,
-                    restitution : 0.1
-                })
-                .onContact('Solid', onContact);
+                .onContact('Wave', hitWave);
         },
-        onContact = function(data) {
-            //console.log('onContact:', data);
+        hitWave = function(data) {
+            console.log('Player#hitWave:', data);
         };
 
     that.init = init;
@@ -186,6 +179,20 @@ function componentDash() {
 }
 
 Crafty.c('Dash', componentDash());
+
+function componentWave() {
+    var that = {},
+        init = function() {
+            this.requires('Solid, sprite_wave_good, Phase')
+                .setGoodSprite('sprite_wave_good')
+                .setEvilSprite('sprite_wave_evil');
+        };
+
+    that.init = init;
+    return that;
+}
+
+Crafty.c('Wave', componentWave());
 
 // Helpers
 function swapSprite(entity, newSprite) {

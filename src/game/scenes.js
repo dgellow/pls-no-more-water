@@ -4,14 +4,31 @@ let _ = require('lodash');
 
 // Game scene
 function enterGame() {
-    var p = Crafty.e('Player').attr({x: 0, y: 0});
+    // Player
+    var p = Crafty.e('Player').setMetrics({x: 100, y: -200}, {
+        bodyType: 'dynamic',
+        density : 10,
+        friction : 30,
+        restitution : 0.1
+    });
     Crafty.viewport.follow(p);
 
+    // Platforms
     Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 5000});
 
+    // Tools
     Crafty.e('Hook');
     Crafty.e('Dash');
 
+    // Wave
+    Crafty.e('Wave').setMetrics({x: 0, y: -70}, {
+        bodyType: 'kinematic',
+        density : 10,
+        friction : 30,
+        restitution : 0.1
+    });
+
+    // Global events
     Crafty.e('Keyboard').bind('KeyDown', (e) => {
         switch (e.key) {
         case Crafty.keys.SHIFT:
@@ -46,6 +63,14 @@ let objAssets = {
             map: {
                 sprite_platform_good: [0, 0],
                 sprite_platform_evil: [0, 1]
+            }
+        },
+        'assets/wave.png': {
+            tile: 61,
+            tileh: 70,
+            map: {
+                sprite_wave_good: [0, 0],
+                sprite_wave_evil: [0, 1]
             }
         }
     }
