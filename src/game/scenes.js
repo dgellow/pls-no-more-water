@@ -4,10 +4,10 @@ let _ = require('lodash');
 
 // Game scene
 function enterGame() {
-    var p = Crafty.e('Player').attr({x: 0, y: 5});
+    var p = Crafty.e('Player').attr({x: 0, y: 0});
     Crafty.viewport.follow(p);
 
-    Crafty.e('Platform').attr({x: 0, y: 0, w: 5000});
+    Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 5000});
 
     Crafty.e('Keyboard').bind('KeyDown', (e) => {
         switch (e.key) {

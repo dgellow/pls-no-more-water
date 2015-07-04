@@ -5,26 +5,24 @@ import _ from 'lodash';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('2D, Canvas, SpriteAnimation, sprite_player_good, Collision, Gravity, Twoway, Phase')
-                .checkHits('Solid')
-                .bind('HitOn', bindHitOn)
-                .bind('HitOff', bindHitOff)
+            this.requires('2D, Canvas, SpriteAnimation, Box2D, sprite_player_good, Twoway, Phase')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
-                .gravity('Solid')
-                .gravityConst(0.4)
+                .attr({y: -200})
                 .twoway(4, 7)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
-                .bind('changePhase', this.applyPhase);
+                .bind('changePhase', this.applyPhase)
+                .box2d({
+                    bodyType: 'dynamic',
+                    density : 10,
+                    friction : 30,
+                    restitution : 0.1
+                })
+                .onContact('Solid', onContact);
         },
-        bindHitOn = function(data) {
-            console.log("Hit on");
-            console.log(data);
-        },
-        bindHitOff = function(component) {
-            console.log("Hit off");
-            console.log(component);
+        onContact = function(data) {
+            console.log('onContact:', data);
         };
 
     that.init = init;
@@ -36,12 +34,20 @@ Crafty.c('Player', componentPlayer());
 function componentSolid() {
     var that = {},
         init = function() {
-            this.requires('2D, Canvas, Collision')
-                .attr({h: 21})
-                .collision();
+            this.requires('2D, Canvas, Box2D');
+        },
+        setMetrics = function(props, optBox2DProps) {
+            this.attr(props)
+                .box2d(optBox2DProps || {
+                    bodyType: 'static',
+                    density: 1.0,
+                    friction: 0,
+                    restitution: 0
+                });
         };
 
     that.init = init;
+    that.setMetrics = setMetrics;
     return that;
 }
 

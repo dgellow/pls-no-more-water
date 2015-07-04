@@ -20,6 +20,8 @@ function createGame(props) {
         start = function() {
             Crafty.init(5000, 600);
             Crafty.viewport.init(667, 500);
+            Crafty.box2D.init(0, 1, 32, true);
+            Crafty.box2D.showDebugInfo();
             Crafty.scene('Loading');
         },
         shiftPhase = function() {
