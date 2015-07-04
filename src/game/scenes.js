@@ -5,16 +5,49 @@ let _ = require('lodash');
 // Game scene
 function enterGame() {
     // Player
-    var p = Crafty.e('Player').setMetrics({x: 100, y: -200}, {
-        bodyType: 'dynamic',
-        density : 10,
-        friction : 30,
-        restitution : 0.1
-    });
+    var p = Crafty.e('Player')
+            .controls(30)
+            .setMetrics({x: 100, y: -200}, {
+                bodyType: 'dynamic',
+                density : 10,
+                friction : 30,
+                restitution : 0.1
+            });
     Crafty.viewport.follow(p);
 
     // Platforms
-    Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 5000});
+    Crafty.e('Platform').setMetrics({x: 0, y: 0, w: 50000});
+    _.range(1, 20).forEach((x) => {
+        _.range(1, 20).forEach((y) => {
+            Crafty.e('Platform')
+                .setMetrics({
+                    x: 300 + (30 * x),
+                    y: -(30 * y),
+                    w: 5,
+                    h: 5
+                }, {
+                    bodyType: 'dynamic',
+                    density : 10,
+                    friction : 40
+                });
+        });
+    });
+
+    _.range(1, 20).forEach((x) => {
+        _.range(1, 20).forEach((y) => {
+            Crafty.e('Platform')
+                .setMetrics({
+                    x: 300 + (30 * x),
+                    y: -(30 * y),
+                    w: 10,
+                    h: 10
+                }, {
+                    bodyType: 'dynamic',
+                    density : 10,
+                    friction : 40
+                });
+        });
+    });
 
     // Tools
     Crafty.e('Hook');
@@ -26,9 +59,9 @@ function enterGame() {
             bodyType: 'kinematic',
             density : 10,
             friction : 30,
-            restitution : 0.1
+            restitution : 0
         })
-        .setSpeed(2);
+        .setSpeed(10);
 
     // Global events
     Crafty.e('Keyboard').bind('KeyDown', (e) => {

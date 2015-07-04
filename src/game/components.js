@@ -10,7 +10,6 @@ function componentPlayer() {
                 .animate('PlayerWalking', -1)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
-                .controls(4)
                 .onContact('Wave', hitWave)
                 .bind('MouseDown', function(e) {
                     console.log('MouseDown', e);
@@ -76,7 +75,7 @@ function componentSolid() {
                 .box2d(optBox2DProps || {
                     bodyType: 'static',
                     density: 1.0,
-                    friction: 0,
+                    friction: 0.01,
                     restitution: 0
                 });
         };
