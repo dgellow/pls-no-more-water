@@ -72,3 +72,19 @@ function enterLoading() {
 }
 
 Crafty.scene('Loading', enterLoading);
+
+function enterEnd() {
+    Crafty.e('2D, DOM, Text')
+        .attr({w: 500, h: 300, x: 150, y: 120})
+        .text('Congrats, you have just cleared the final level! Press any key to restart.')
+        .textFont({size: '50px', weight: 'bold'})
+        .css(Game.textStyle);
+
+    Crafty.background('url(http://www.reactiongifs.com/wp-content/uploads/2012/10/billmurray-seal.gif)');
+
+    Crafty.addEvent('', Crafty.stage.elem, 'keydown', (ev) => {
+        Crafty.scene('Game');
+    });
+}
+
+Crafty.scene('End', enterEnd);
