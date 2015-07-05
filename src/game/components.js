@@ -70,11 +70,10 @@ function componentCooldown() {
         runCooldown = function(initialParam, endParams) {
             this.initialCallback(initialParam);
             let interval = setInterval(progressCooldown, timeframe);
-            let self = this;
-            setTimeout(function() {
+            setTimeout(() => {
                 clearInterval(interval);
-                self.currentDuration = self.cooldownDuration;
-                self.endCallback(endParams);
+                this.currentDuration = this.cooldownDuration;
+                this.endCallback(endParams);
             }, this.cooldownDuration);
         },
         progressCooldown = function() {
