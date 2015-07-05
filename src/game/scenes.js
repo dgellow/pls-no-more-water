@@ -5,6 +5,57 @@ import {objAssets, generateMap} from './assets';
 import {bindEvents, unbindEvents} from './events';
 import {getEntitiesAt} from './helpers';
 
+// Intro scene
+function enterIntro() {
+    Crafty.e('2D, Canvas, Image')
+        .attr({w: Crafty.viewport.width, h: Crafty.viewport.height})
+        .image('assets/intro_title.png');
+
+    Crafty.addEvent('', Crafty.stage.elem,
+                    'keydown', Crafty.scene.bind(null, 'HelpGood'));
+}
+
+function leaveIntro() {
+    Crafty.removeEvent('', Crafty.stage.elem,
+                       'keydown', Crafty.scene.bind(null, 'HelpGood'));
+}
+
+Crafty.scene('Intro', enterIntro, leaveIntro);
+
+// Help good scene
+function enterHelpGood() {
+    Crafty.e('2D, Canvas, Image')
+        .attr({w: Crafty.viewport.width, h: Crafty.viewport.height})
+        .image('assets/intro_help_good.png');
+
+    Crafty.addEvent('', Crafty.stage.elem,
+                    'keydown', Crafty.scene.bind(null, 'HelpEvil'));
+}
+
+function leaveHelpGood() {
+    Crafty.removeEvent('', Crafty.stage.elem,
+                       'keydown', Crafty.scene.bind(null, 'HelpEvil'));
+}
+
+Crafty.scene('HelpGood', enterHelpGood, leaveHelpGood);
+
+// Help evil scene
+function enterHelpEvil() {
+    Crafty.e('2D, Canvas, Image')
+        .attr({w: Crafty.viewport.width, h: Crafty.viewport.height})
+        .image('assets/intro_help_evil.png');
+
+    Crafty.addEvent('', Crafty.stage.elem,
+                    'keydown', Crafty.scene.bind(null, 'Game'));
+}
+
+function leaveHelpEvil() {
+    Crafty.removeEvent('', Crafty.stage.elem,
+                       'keydown', Crafty.scene.bind(null, 'Game'));
+}
+
+Crafty.scene('HelpEvil', enterHelpEvil, leaveHelpEvil);
+
 // Game scene
 function enterGame() {
     // Background
@@ -59,7 +110,7 @@ Crafty.scene('Game', enterGame, leaveGame);
 
 // Loading scene
 function assetsLoaded() {
-    Crafty.scene('Game');
+    Crafty.scene('Intro');
 }
 
 function enterLoading() {
