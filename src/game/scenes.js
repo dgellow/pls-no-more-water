@@ -33,20 +33,19 @@ function enterGame() {
 
     // Wave
     var wave = Crafty.e('Wave')
-            .setMetrics({x: -2000, y: 80}, {
+            .setMetrics({x: -1900, y: 50, w: 1400}, {
                 bodyType: 'kinematic',
                 density : 10,
                 friction : 30,
                 restitution : 0,
                 shape: [
                     [0, 80],
-                    [1300, 80],
-                    [1300, 680],
+                    [1200, 80],
+                    [1200, 680],
                     [0, 680]
-
                 ]
             })
-            .setSpeed(2);
+            .setSpeed(1.5);
 
     // Setup global events
     bindEvents();

@@ -19,15 +19,15 @@ let sprites = {
     },
 
     'assets/wave-good.png': {
-        tile: 1480,
-        tileh: 600,
+        tile: 1617,
+        tileh: 661,
         map: {
             sprite_wave_good: [0, 0]
         }
     },
     'assets/wave-evil.png': {
-        tile: 1480,
-        tileh: 600,
+        tile: 1617,
+        tileh: 661,
         map: {
             sprite_wave_evil: [0, 0]
         }
