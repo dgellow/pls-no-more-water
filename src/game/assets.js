@@ -85,12 +85,16 @@ export function generateMap() {
     } = tilemap;
 
     layers.forEach((layer) => {
+        var firstCoord ;
+        var lastCoord;
+        var begunHitbox = false
         for (var x = 0; x < width; x++) {
             for (var y = 0; y < height; y++) {
-                let sprite = sprites[layer.data[(width * y) + x]];
+                let layerValue = layer.data[(width * y) + x],
+                    sprite = sprites[layerValue];
                 if (sprite) {
                     Crafty.e('Platform')
-                        .setMetrics({
+                        .attr({
                             x: x * tilewidth,
                             y: y * tileheight,
                             w: tilewidth,
@@ -98,6 +102,25 @@ export function generateMap() {
                         })
                         .setGoodSprite(`${sprite}_good`)
                         .setEvilSprite(`${sprite}_evil`);
+                }
+                if (layerValue == 4 && !begunHitbox) {
+                    begunHitbox = true;
+                    firstCoord = {x: x * tilewidth, y: y * tileheight};
+                }
+                if (begunHitbox && layerValue != 4) {
+                    begunHitbox = false;
+                    lastCoord = {x: x * tilewidth, y: y * tileheight};
+                    Crafty.e('2D, Canvas, Box2D')
+                        .attr({x: firstCoord.x,
+                            y: firstCoord.y,
+                            w: lastCoord.x - firstCoord.x,
+                            h: lastCoord.y - firstCoord.y })
+                        .box2d({
+                            bodyType: 'static',
+                            density: 1.0,
+                            friction: 0,
+                            restitution: 0
+                        });
                 }
             }
         }

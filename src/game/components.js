@@ -135,7 +135,7 @@ Crafty.c('Solid', componentSolid());
 function componentPlatform() {
     var that = {},
         init = function() {
-            this.requires('Solid, Phase');
+            this.requires('2D, Canvas, Phase');
         };
 
     that.init = init;
