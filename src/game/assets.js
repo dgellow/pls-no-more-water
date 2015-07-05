@@ -17,15 +17,6 @@ let sprites = {
         }
     },
 
-    'assets/asteroid-platform.png': {
-        tile: 155,
-        tileh: 21,
-        map: {
-            sprite_platform_good: [0, 0],
-            sprite_platform_evil: [0, 1]
-        }
-    },
-
     'assets/wave-good.png': {
         tile: 61,
         tileh: 70,
@@ -45,20 +36,27 @@ let sprites = {
         tile: 32,
         tileh: 32,
         map: {
-            sprite_platform_good: [0, 0],
-            sprite_item_good: [0, 1],
-            sprite_wall_good: [1, 0],
-            sprite_ground_good: [1, 1]
+            sprite_ground_1_good: [0, 0],
+            sprite_ground_2_good: [1, 0],
+            sprite_ground_3_good: [0, 1],
+            sprite_ground_4_good: [1, 1],
+            sprite_platform_good: [0, 2],
+            sprite_item_good: [2, 1],
+            sprite_wall_good: [2, 0]
         }
     },
+
     'assets/tiles-evil.png': {
         tile: 32,
         tileh: 32,
         map: {
-            sprite_platform_evil: [0, 0],
-            sprite_item_evil: [0, 1],
-            sprite_wall_evil: [1, 0],
-            sprite_ground_evil: [1, 1]
+            sprite_ground_1_evil: [0, 0],
+            sprite_ground_2_evil: [0, 1],
+            sprite_ground_3_evil: [1, 0],
+            sprite_ground_4_evil: [1, 1],
+            sprite_platform_evil: [2, 0],
+            sprite_item_evil: [1, 2],
+            sprite_wall_evil: [0, 2]
         }
     }
 };
@@ -69,10 +67,13 @@ export {objAssets};
 export function generateMap() {
     let sprites = [
         null,
-        'sprite_platform',
-        'sprite_item',
+        'sprite_ground_1',
+        'sprite_ground_2',
         'sprite_wall',
-        'sprite_ground'
+        'sprite_ground_3',
+        'sprite_ground_4',
+        'sprite_item',
+        'sprite_platform'
     ];
 
     let {
