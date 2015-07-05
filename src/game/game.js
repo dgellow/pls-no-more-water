@@ -19,7 +19,7 @@ function createGame(props) {
     var that = props,
         start = function() {
             Crafty.init(5000, 600);
-            Crafty.viewport.init(667, 500);
+            Crafty.viewport.init();
             Crafty.box2D.init(0, 7, 32, true);
             Crafty.scene('Loading');
         },
