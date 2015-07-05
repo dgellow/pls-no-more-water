@@ -40,7 +40,7 @@ let globalEvents = {
         }
     },
     playerdie: (ev) => {
-        Crafty.audio.play("you_are_dead");
+        Crafty.audio.play('you_are_dead');
 
         var world = Crafty.box2D.world;
 
@@ -48,7 +48,10 @@ let globalEvents = {
 	    world.DestroyBody(b);
 	}
 
-        Crafty.scene('Game');
+        setTimeout(() => {
+            Crafty.audio.play('resurection');
+            Crafty.scene('Game');
+        }, 1000);
     }
 };
 

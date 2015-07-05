@@ -3,7 +3,8 @@ import tilemap from '../assets/map.json';
 import _ from 'lodash';
 
 let audio = {
-    'you_are_dead': 'assets/you_are_dead.ogg'
+    'you_are_dead': 'assets/you_are_dead.ogg',
+    'resurection': 'assets/resurection.ogg'
 };
 
 let sprites = {
