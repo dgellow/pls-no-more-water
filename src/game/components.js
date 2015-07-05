@@ -43,20 +43,25 @@ Crafty.c('Jump', componentJump());
 
 function componentControllable() {
     var that = {},
-        controls = function(speed) {
+        controls = function(force) {
             this.bind('KeyDown', (ev) => {
                 var vec = this.body.GetLinearVelocity(),
                     vy = vec.y;
 
                 switch(ev.keyCode) {
                 case Crafty.keys.LEFT_ARROW:
-                    vec = new b2Vec2(-speed, vy);
+                    vec = new b2Vec2(-force, vy);
                     break;
                 case Crafty.keys.RIGHT_ARROW:
-                    vec = new b2Vec2(speed, vy);
+                    vec = new b2Vec2(force, vy);
                     break;
                 }
-                this.body.SetLinearVelocity(vec);
+                this.body.ApplyForce(
+                    vec,
+                    this.body.GetWorldCenter()
+                );
+
+                console.log(this.body.GetLinearVelocity());
             });
 
             this.bind('KeyUp', (ev) => {
@@ -71,6 +76,8 @@ function componentControllable() {
                     break;
                 }
                 this.body.SetLinearVelocity(vec);
+
+                console.log(this.body.GetLinearVelocity());
             });
 
             return this;

@@ -9,15 +9,15 @@ import {getEntitiesAt} from './helpers';
 function enterGame() {
     // Player
     var p = Crafty.e('Player')
-            .controls(4)
+            .controls(1500)
             .setMetrics({
                 x: 300,
                 y: 320,
-                _jumpIntensity: 90
+                _jumpIntensity: 60
             }, {
                 bodyType: 'dynamic',
                 density : 10,
-                friction : 30,
+                friction : 0.9,
                 restitution : 0.1
             });
     Crafty.viewport.follow(p);
