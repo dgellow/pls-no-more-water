@@ -252,7 +252,7 @@ Crafty.c('RespondToMouseDown', componentCustomMouseDown());
 function componentTool() {
     var that = {},
         init = function() {
-            this.requires('Keyboard, Cooldown')
+            this.requires('2D, Keyboard, Cooldown')
                 .attr({_usable: true})
                 .setProgressCallback((progress, total) => {
                     document.querySelector('#tool-ui .cooldown')
