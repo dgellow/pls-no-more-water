@@ -130,7 +130,8 @@ export function generateMap() {
         generateWalls,
         generateBackground,
         generateItems,
-        generateCollisions
+        generateCollisions,
+        generateGoalLevel
     ].forEach((f) => {
          f.apply(this, [
              width,
@@ -214,6 +215,24 @@ function generateCollisions(__, ______, ___, ____, layers, _____) {
     }).forEach((layer) => {
         layer.objects.forEach((obj) => {
             Crafty.e('Solid')
+                .setMetrics({
+                    x: obj.x,
+                    y: obj.y,
+                    h: obj.height,
+                    w: obj.width
+                });
+        });
+    });
+}
+
+function generateGoalLevel(__, ______, ___, ____, layers, _____) {
+    _.filter(layers, (l) => {
+        return l.type === 'objectgroup';
+    }).forEach((layer) => {
+        _.filter(layer.objects, (obj) => {
+            return obj.type === 'goalLevel';
+        }).forEach((obj) => {
+            Crafty.e('LevelGoal')
                 .setMetrics({
                     x: obj.x,
                     y: obj.y,
