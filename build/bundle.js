@@ -6989,13 +6989,11 @@ var _lodash = require('lodash');
 
 var _lodash2 = _interopRequireDefault(_lodash);
 
+var _game = require('./game');
+
 var audio = {
     'you_are_dead': 'assets/you_are_dead.ogg',
     'resurection': 'assets/resurection.ogg'
-};
-
-var images = {
-    'intro_title': 'assets/intro_title.svg'
 };
 
 var sprites = {
@@ -7085,7 +7083,7 @@ var sprites = {
     }
 };
 
-var objAssets = { sprites: sprites, audio: audio, images: images };
+var objAssets = { sprites: sprites, audio: audio };
 exports.objAssets = objAssets;
 
 function generateMap() {
@@ -7146,15 +7144,18 @@ function generateBackground(levelWidth, levelHeight, tileheight, tilewidth, laye
 }
 
 function generateItems(levelWidth, levelHeight, tileheight, tilewidth, layers, sprites) {
+    var player = Crafty('Player');
     _lodash2['default'].filter(layers, function (l) {
         return l.name === 'items';
     }).forEach(function (layer) {
         for (var x = 0; x < levelWidth; x++) {
             for (var y = 0; y < levelHeight; y++) {
                 if (layer.data[levelWidth * y + x]) {
-                    Crafty.e('2D, Canvas, sprite_key').attr({
+                    Crafty.e('2D, Canvas, sprite_key, Collectible, Solid').setMetrics({
                         x: x * tilewidth,
                         y: y * tileheight
+                    }).setCollector(player).setHitCallback(function (entity) {
+                        entity.destroy();
                     });
                 }
             }
@@ -7194,7 +7195,7 @@ function generateGoalLevel(__, ______, ___, ____, layers, _____) {
     });
 }
 
-},{"../assets/map.json":2,"lodash":1}],4:[function(require,module,exports){
+},{"../assets/map.json":2,"./game":6,"lodash":1}],4:[function(require,module,exports){
 /* jshint esnext: true */
 'use strict';
 
@@ -7213,10 +7214,17 @@ var _helpers = require('./helpers');
 function componentPlayer() {
     var that = {},
         init = function init() {
-        this.requires('Solid, sprite_player_good, Phase, Controllable').setEvilSprite('sprite_player_evil').setGoodSprite('sprite_player_good').onContact('Wave', hitWave);
+        this.requires('Solid, sprite_player_good, Phase, Controllable, Collector').setEvilSprite('sprite_player_evil').setGoodSprite('sprite_player_good').onContact('Wave', hitWave).onContact('LevelGoal', hitLevelGoal);
+    },
+        collect = function collect(data) {
+        console.log('onContact with collectible', data);
+        Crafty.stage.elem.dispatchEvent(new Event('collectItem'));
     },
         hitWave = function hitWave(data) {
         Crafty.stage.elem.dispatchEvent(new Event('playerdie'));
+    },
+        hitLevelGoal = function hitLevelGoal(data) {
+        Crafty.stage.elem.dispatchEvent(new Event('endgame'));
     };
 
     that.init = init;
@@ -7501,6 +7509,38 @@ function componentDash() {
 
 Crafty.c('Dash', componentDash());
 
+function componentCollectible() {
+    var init = function init() {
+        this.requires('Solid').onContact('Player', applyCallback);
+    },
+        setHitCallback = function setHitCallback(fn) {
+        return this.attr({ _hitcb: fn });
+    },
+        setCollector = function setCollector(c) {
+        return this.attr({ _collector: c });
+    },
+        applyCallback = function applyCallback() {
+        console.log('collectible hit');
+        this._collector.collectItem(this);
+        this._hitcb(this);
+    };
+    return { init: init, setHitCallback: setHitCallback, setCollector: setCollector };
+}
+
+Crafty.c('Collectible', componentCollectible());
+
+function componentCollector() {
+    var init = function init() {
+        this.attr({ _collectedItems: [] });
+    },
+        collectItem = function collectItem(item) {
+        return this._collectedItems.push(item);
+    };
+    return { init: init, collectItem: collectItem };
+}
+
+Crafty.c('Collector', componentCollector());
+
 function componentWave() {
     var that = {},
         init = function init() {
@@ -7545,6 +7585,10 @@ var _helpers = require('./helpers');
 var Game = require('./game');
 
 var globalEvents = {
+    collectItem: function collectItem(ev) {
+        console.log('item collected');
+        Crafty.trigger('HitOn', ev);
+    },
     mousedown: function mousedown(ev) {
         // left click
         if (ev.which === 1) {
@@ -7590,6 +7634,15 @@ var globalEvents = {
             Crafty.audio.play('resurection');
             Crafty.scene('Game');
         }, 1000);
+    },
+    endgame: function endgame(ev) {
+        var world = Crafty.box2D.world;
+
+        for (var b = world.GetBodyList(); b; b = b.GetNext()) {
+            world.DestroyBody(b);
+        }
+
+        Crafty.scene('End');
     }
 };
 
@@ -7631,7 +7684,6 @@ function createGame(props) {
         Crafty.init(5000, 600);
         Crafty.viewport.init();
         Crafty.box2D.init(0, 7, 32, true);
-        //Crafty.box2D.showDebugInfo();
         Crafty.scene('Loading');
     },
         shiftPhase = function shiftPhase() {
@@ -7802,7 +7854,7 @@ function enterEnd() {
     Crafty.background('url(http://www.reactiongifs.com/wp-content/uploads/2012/10/billmurray-seal.gif)');
 
     Crafty.addEvent('', Crafty.stage.elem, 'keydown', function (ev) {
-        Crafty.scene('Game');
+        document.location.reload();
     });
 }
 
