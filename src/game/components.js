@@ -6,17 +6,12 @@ import {swapSprite} from './helpers';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable, Jump')
+            this.requires('Solid, SpriteAnimation, sprite_player_good, Phase, Controllable')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
-                .onContact('Wave', hitWave)
-                .bind('KeyDown', (ev) => {
-                    if (ev.keyCode === Crafty.keys.SPACE) {
-                        this.jump();
-                    }
-                });
+                .onContact('Wave', hitWave);
         },
         hitWave = function(data) {
 
@@ -30,12 +25,38 @@ Crafty.c('Player', componentPlayer());
 
 function componentJump() {
     var that = {},
-        jump = function() {
-            var vec = new b2Vec2(0, -this._jumpIntensity);
-            this.body.ApplyImpulse(vec, this.body.GetWorldCenter());
+        init = function() {
+            this.requires('Tool, RespondToMouseDown, Phase')
+                .setCooldownDuration(350)
+                .setAction((ev) => {
+                    if (this._usable) {
+                        var player = Crafty('Player'),
+                            vec = new b2Vec2(0, -this._intensity);
+
+                        player.body.ApplyImpulse(
+                            vec, player.body.GetWorldCenter()
+                        );
+
+                        this.runCooldown();
+                    }
+                })
+                .setPhaseCallback((phase) => {
+                    if (phase === 'evil') {
+                        this.attr({_usable: false});
+                        this.removeComponent('RespondToMouseDown', true);
+                    } else {
+                        this.attr({_usable: true});
+                        document.querySelector('#tool-ui .cooldown')
+                            .innerHTML = 'Usable';
+                        document.querySelector('#tool-ui h2')
+                            .innerHTML = 'JET PACK';
+
+                        this.addComponent('RespondToMouseDown');
+                    }
+                });
         };
 
-    that.jump = jump;
+    that.init = init;
     return that;
 }
 
@@ -60,8 +81,6 @@ function componentControllable() {
                     vec,
                     this.body.GetWorldCenter()
                 );
-
-                console.log(this.body.GetLinearVelocity());
             });
 
             this.bind('KeyUp', (ev) => {
@@ -76,8 +95,6 @@ function componentControllable() {
                     break;
                 }
                 this.body.SetLinearVelocity(vec);
-
-                console.log(this.body.GetLinearVelocity());
             });
 
             return this;
@@ -181,18 +198,29 @@ function componentPhase() {
             swapSprite(this, sprite);
             return this.attr({_goodSprite: sprite});
         },
+        setPhaseCallback = function(cb) {
+            return this.attr({phaseCallback: cb});
+        },
         applyPhase = function(phase) {
-            if (phase == "evil") {
-                swapSprite(this, this._evilSprite);
-            } else {
-                swapSprite(this, this._goodSprite);
+            if (this._evilSprite && this._goodSprite)  {
+                if (phase == "evil") {
+                    swapSprite(this, this._evilSprite);
+                } else {
+                    swapSprite(this, this._goodSprite);
+                }
             }
+
+            if (this.phaseCallback) {
+                this.phaseCallback(phase);
+            }
+
             return this;
         };
 
     that.init = init;
     that.setGoodSprite = setGoodSprite;
     that.setEvilSprite = setEvilSprite;
+    that.setPhaseCallback = setPhaseCallback;
     return that;
 }
 
@@ -203,6 +231,9 @@ function componentCustomMouseDown() {
         init = function() {
             this.bind('customMouseDown', performAction);
         },
+        remove = function() {
+            this.unbind('customMouseDown', performAction);
+        },
         setAction = function(fn) {
             return this.attr({_performAction: fn});
         },
@@ -210,6 +241,7 @@ function componentCustomMouseDown() {
             this._performAction(ev);
         };
     that.init = init;
+    that.remove = remove;
     that.setAction = setAction;
     return that;
 }
@@ -220,7 +252,21 @@ function componentTool() {
     var that = {},
         init = function() {
             this.requires('Keyboard, Cooldown')
-                .attr({_usable: true});
+                .attr({_usable: true})
+                .setProgressCallback((progress, total) => {
+                    document.querySelector('#tool-ui .cooldown')
+                        .innerHTML = progress * (total / 1000);
+                })
+                .setInitialCallback(() => {
+                    this._usable = false;
+                    document.querySelector('#tool-ui .cooldown')
+                        .innerHTML = this.cooldownDuration / 1000;
+                })
+                .setEndCallback(() => {
+                    this._usable = true;
+                    document.querySelector('#tool-ui .cooldown')
+                        .innerHTML = 'Usable';
+                });
         };
     that.init = init;
     return that;
@@ -228,37 +274,11 @@ function componentTool() {
 
 Crafty.c('Tool', componentTool());
 
-function componentHook() {
-    var that = {},
-        init = function() {
-            this.requires('Tool')
-        };
-
-    that.init = init;
-    return that;
-}
-
-Crafty.c('Hook', componentHook());
-
 function componentDash() {
     var that = {},
         init = function() {
-            this.requires('Tool, RespondToMouseDown')
+            this.requires('Tool, RespondToMouseDown, Phase')
                 .setCooldownDuration(2000)
-                .setProgressCallback((progress, total) => {
-                    document.querySelector('#dash-ui .cooldown')
-                        .innerHTML = progress * (total / 1000);
-                })
-                .setInitialCallback(() => {
-                    this._usable = false;
-                    document.querySelector('#dash-ui .cooldown')
-                        .innerHTML = this.cooldownDuration / 1000;
-                })
-                .setEndCallback(() => {
-                    this._usable = true;
-                    document.querySelector('#dash-ui .cooldown')
-                        .innerHTML = 'Usable';
-                })
                 .setAction((ev) => {
                     if (this._usable) {
                         var mouseX = ev.offsetX - Crafty.viewport.x,
@@ -272,7 +292,21 @@ function componentDash() {
                         player.body.ApplyImpulse(
                             vec, player.body.GetWorldCenter()
                         );
+
                         this.runCooldown();
+                    }
+                })
+                .setPhaseCallback((phase) => {
+                    if (phase === 'evil') {
+                        this.attr({_usable: true});
+                        this.addComponent('RespondToMouseDown');
+                        document.querySelector('#tool-ui .cooldown')
+                            .innerHTML = 'Usable';
+                        document.querySelector('#tool-ui h2')
+                            .innerHTML = 'DASH';
+                    } else {
+                        this.attr({_usable: false});
+                        this.removeComponent('RespondToMouseDown', true);
                     }
                 });
         };

@@ -12,8 +12,7 @@ function enterGame() {
             .controls(1500)
             .setMetrics({
                 x: 300,
-                y: 320,
-                _jumpIntensity: 60
+                y: 320
             }, {
                 bodyType: 'dynamic',
                 density : 10,
@@ -23,7 +22,7 @@ function enterGame() {
     Crafty.viewport.follow(p);
 
     // Tools
-    Crafty.e('Hook');
+    Crafty.e('Jump').attr({_intensity: 60});
     Crafty.e('Dash').attr({_intensity: 200});
 
     // Platforms
