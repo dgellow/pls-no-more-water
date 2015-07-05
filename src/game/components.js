@@ -6,12 +6,17 @@ import {swapSprite} from './helpers';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable')
+            this.requires('Solid, SpriteAnimation, Keyboard, sprite_player_good, Phase, Controllable, Jump')
                 .reel('PlayerWalking', 750, 0, 0, 3)
                 .animate('PlayerWalking', -1)
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
-                .onContact('Wave', hitWave);
+                .onContact('Wave', hitWave)
+                .bind('KeyDown', (ev) => {
+                    if (ev.keyCode === Crafty.keys.SPACE) {
+                        this.jump();
+                    }
+                });
         },
         hitWave = function(data) {
             console.log('Player#hitWave:', data);
@@ -22,6 +27,19 @@ function componentPlayer() {
 }
 
 Crafty.c('Player', componentPlayer());
+
+function componentJump() {
+    var that = {},
+        jump = function() {
+            var vec = new b2Vec2(0, -this._jumpIntensity);
+            this.body.ApplyImpulse(vec, this.body.GetWorldCenter());
+        };
+
+    that.jump = jump;
+    return that;
+}
+
+Crafty.c('Jump', componentJump());
 
 function componentControllable() {
     var that = {},
@@ -238,7 +256,7 @@ function componentDash() {
                 })
                 .setAction((ev) => {
                     if (this._usable) {
-                        let mouseX = ev.offsetX - Crafty.viewport.x,
+                        var mouseX = ev.offsetX - Crafty.viewport.x,
                             mouseY = ev.offsetY - Crafty.viewport.y,
                             player = Crafty('Player'),
                             vec = new b2Vec2(mouseX - player.x,

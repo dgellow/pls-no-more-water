@@ -10,7 +10,11 @@ function enterGame() {
     // Player
     var p = Crafty.e('Player')
             .controls(4)
-            .setMetrics({x: 300, y: 320}, {
+            .setMetrics({
+                x: 300,
+                y: 320,
+                _jumpIntensity: 90
+            }, {
                 bodyType: 'dynamic',
                 density : 10,
                 friction : 30,
