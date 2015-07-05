@@ -76,7 +76,7 @@ function enterGame() {
     Crafty.viewport.follow(p);
 
     // Tools
-    Crafty.e('Jump').attr({_intensity: 60});
+    Crafty.e('Jump').attr({_intensity: 40});
     Crafty.e('Dash').attr({_intensity: 200});
 
     // Platforms
@@ -96,7 +96,7 @@ function enterGame() {
                     [0, 680]
                 ]
             })
-            .setSpeed(1.5);
+            .setSpeed(2);
 
     // Setup global events
     bindEvents();
