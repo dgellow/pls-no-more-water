@@ -3,15 +3,15 @@ import tilemap from '../assets/map.json';
 import _ from 'lodash';
 
 let sprites = {
-    'assets/space-suit-good.png': {
-        tile: 30,
+    'assets/hero-good.png': {
+        tile: 25,
         tileh: 36,
         map: {
             sprite_player_good: [0, 0]
         }
     },
-    'assets/space-suit-evil.png': {
-        tile: 30,
+    'assets/hero-evil.png': {
+        tile: 35,
         tileh: 36,
         map: {
             sprite_player_evil: [0, 0]

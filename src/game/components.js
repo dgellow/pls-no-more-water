@@ -6,9 +6,7 @@ import {swapSprite} from './helpers';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('Solid, SpriteAnimation, sprite_player_good, Phase, Controllable')
-                .reel('PlayerWalking', 750, 0, 0, 3)
-                .animate('PlayerWalking', -1)
+            this.requires('Solid, sprite_player_good, Phase, Controllable')
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
                 .onContact('Wave', hitWave);
