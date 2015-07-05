@@ -19,7 +19,7 @@ function componentPlayer() {
                 });
         },
         hitWave = function(data) {
-            console.log('Player#hitWave:', data);
+
         };
 
     that.init = init;
@@ -175,8 +175,6 @@ function componentPhase() {
             return this.attr({_goodSprite: sprite});
         },
         applyPhase = function(phase) {
-            console.log('Phase: ', phase);
-
             if (phase == "evil") {
                 swapSprite(this, this._evilSprite);
             } else {

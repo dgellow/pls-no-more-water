@@ -4,7 +4,6 @@ import {getEntitiesAt} from './helpers';
 
 let globalEvents = {
     keydown: (e) => {
-        console.log(e);
         if (e.shiftKey) {
             Crafty.trigger('changePhase', Game.shiftPhase());
         }
