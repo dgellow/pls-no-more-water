@@ -41,9 +41,18 @@ let sprites = {
             sprite_ground_2_good: [1, 0],
             sprite_ground_3_good: [0, 1],
             sprite_ground_4_good: [1, 1],
-            sprite_platform_good: [0, 2],
+            sprite_platform_1_good: [3, 1],
+            sprite_platform_2_good: [1, 2],
+            sprite_platform_3_good: [2, 2],
+            sprite_platform_4_good: [0, 3],
+            sprite_platform_5_good: [1, 3],
+            sprite_lava_1_good: [3, 2],
+            sprite_lava_2_good: [2, 3],
+            sprite_lava_3_good: [3, 3],
             sprite_item_good: [2, 1],
-            sprite_wall_good: [2, 0]
+            sprite_blue_good: [0, 2],
+            sprite_wall_good: [2, 0],
+            sprite_wall_dark_good: [3, 0]
         }
     },
 
@@ -52,12 +61,21 @@ let sprites = {
         tileh: 32,
         map: {
             sprite_ground_1_evil: [0, 0],
-            sprite_ground_2_evil: [0, 1],
-            sprite_ground_3_evil: [1, 0],
+            sprite_ground_2_evil: [1, 0],
+            sprite_ground_3_evil: [0, 1],
             sprite_ground_4_evil: [1, 1],
-            sprite_platform_evil: [2, 0],
-            sprite_item_evil: [1, 2],
-            sprite_wall_evil: [0, 2]
+            sprite_platform_1_evil: [3, 1],
+            sprite_platform_2_evil: [1, 2],
+            sprite_platform_3_evil: [2, 2],
+            sprite_platform_4_evil: [0, 3],
+            sprite_platform_5_evil: [1, 3],
+            sprite_lava_1_evil: [3, 2],
+            sprite_lava_2_evil: [2, 3],
+            sprite_lava_3_evil: [3, 3],
+            sprite_item_evil: [2, 1],
+            sprite_blue_evil: [0, 2],
+            sprite_wall_evil: [2, 0],
+            sprite_wall_dark_evil: [3, 0]
         }
     },
 
@@ -80,10 +98,19 @@ export function generateMap() {
         'sprite_ground_1',
         'sprite_ground_2',
         'sprite_wall',
+        'sprite_wall_dark',
         'sprite_ground_3',
         'sprite_ground_4',
         'sprite_item',
-        'sprite_platform'
+        'sprite_platform_1',
+        'sprite_blue',
+        'sprite_platform_2',
+        'sprite_platform_3',
+        'sprite_lava_1',
+        'sprite_platform_4',
+        'sprite_platform_5',
+        'sprite_lava_2',
+        'sprite_lava_3'
     ];
 
     let {
