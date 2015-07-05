@@ -3,6 +3,10 @@ let Game = require('./game');
 import {getEntitiesAt} from './helpers';
 
 let globalEvents = {
+    collectItem: (ev) => {
+        console.log('item collected');
+        Crafty.trigger('HitOn', ev);
+    },
     mousedown: (ev) => {
         // left click
         if (ev.which === 1) {
