@@ -97,8 +97,8 @@ export function generateMap() {
     [
         generateWalls,
         generateBackground,
-        generateItems
-        // generateCollisions
+        generateItems,
+        generateCollisions
     ].forEach((f) => {
          f.apply(this, [
              width,
@@ -176,10 +176,18 @@ function generateItems(levelWidth, levelHeight, tileheight, tilewidth, layers, s
     });
 }
 
-function generateCollisions() {
+function generateCollisions(__, ______, ___, ____, layers, _____) {
     _.filter(layers, (l) => {
         return l.type === 'objectgroup';
     }).forEach((layer) => {
-
+        layer.objects.forEach((obj) => {
+            Crafty.e('Solid')
+                .setMetrics({
+                    x: obj.x,
+                    y: obj.y,
+                    h: obj.height,
+                    w: obj.width
+                });
+        });
     });
 }
