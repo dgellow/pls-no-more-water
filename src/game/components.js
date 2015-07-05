@@ -278,6 +278,7 @@ function componentDash() {
     var that = {},
         init = function() {
             this.requires('Tool, RespondToMouseDown, Phase')
+                .attr({_usable: false})
                 .setCooldownDuration(2000)
                 .setAction((ev) => {
                     if (this._usable) {
