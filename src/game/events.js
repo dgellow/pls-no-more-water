@@ -5,7 +5,13 @@ import {getEntitiesAt} from './helpers';
 let globalEvents = {
     keydown: (e) => {
         if (e.shiftKey) {
-            Crafty.trigger('changePhase', Game.shiftPhase());
+            let phase = Game.shiftPhase();
+            Crafty.trigger('changePhase', phase);
+            if (phase === 'evil') {
+                Crafty.background('#422c14 url(assets/background_evil.png) no-repeat');
+            } else {
+                Crafty.background('#87b7e3 url(assets/background_good.png) no-repeat');
+            }
         }
     },
     mousedown: (ev) => {

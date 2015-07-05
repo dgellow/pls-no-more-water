@@ -7,6 +7,9 @@ import {getEntitiesAt} from './helpers';
 
 // Game scene
 function enterGame() {
+    // Background
+    Crafty.background('#87b7e3 url(assets/background_good.png) no-repeat');
+
     // Player
     var p = Crafty.e('Player')
             .controls(1500)
