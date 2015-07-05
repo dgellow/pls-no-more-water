@@ -10,6 +10,7 @@ function componentPlayer() {
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
                 .onContact('Wave', hitWave)
+                .onContact('LevelGoal', hitLevelGoal);
         },
         collect = function(data) {
             console.log('onContact with collectible', data);
@@ -18,6 +19,10 @@ function componentPlayer() {
         hitWave = function(data) {
             Crafty.stage.elem
                 .dispatchEvent(new Event('playerdie'));
+        },
+        hitLevelGoal = function(data) {
+            Crafty.stage.elem
+                .dispatchEvent(new Event('endgame'));
         };
 
     that.init = init;

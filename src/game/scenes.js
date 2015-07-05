@@ -134,7 +134,7 @@ function enterEnd() {
     Crafty.background('url(http://www.reactiongifs.com/wp-content/uploads/2012/10/billmurray-seal.gif)');
 
     Crafty.addEvent('', Crafty.stage.elem, 'keydown', (ev) => {
-        Crafty.scene('Game');
+        document.location.reload();
     });
 }
 
