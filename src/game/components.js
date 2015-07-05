@@ -320,9 +320,7 @@ Crafty.c('Dash', componentDash());
 function componentWave() {
     var that = {},
         init = function() {
-            this.requires('Solid, SpriteAnimation, sprite_wave_good, Phase')
-                .reel('WaveAnimation', 350, 0, 0, 3)
-                .animate('WaveAnimation', -1)
+            this.requires('Solid, sprite_wave_good, Phase')
                 .setGoodSprite('sprite_wave_good')
                 .setEvilSprite('sprite_wave_evil');
         },
