@@ -1,5 +1,6 @@
 /* jshint esnext: true */
 import tilemap from '../assets/map.json';
+import _ from 'lodash';
 
 let sprites = {
     'assets/space-suit-good.png': {
@@ -84,6 +85,7 @@ export function generateMap() {
         tilewidth
     } = tilemap;
 
+<<<<<<< HEAD
     layers.forEach((layer) => {
         var firstCoord ;
         var lastCoord;
@@ -92,6 +94,32 @@ export function generateMap() {
             for (var y = 0; y < height; y++) {
                 let layerValue = layer.data[(width * y) + x],
                     sprite = sprites[layerValue];
+=======
+    [
+        generateWalls,
+        generateBackground // ,
+        // generateItems,
+        // generateCollisions
+    ].forEach((f) => {
+         f.apply(this, [
+             width,
+             height,
+             tileheight,
+             tilewidth,
+             layers,
+             sprites
+         ]);
+     });
+}
+
+function generateWalls(levelWidth, levelHeight, tileheight, tilewidth, layers, sprites) {
+    _.filter(layers, (l) => {
+        return l.name === 'walls';
+    }).forEach((layer) => {
+        for (var x = 0; x < levelWidth; x++) {
+            for (var y = 0; y < levelHeight; y++) {
+                let sprite = sprites[layer.data[(levelWidth * y) + x]];
+>>>>>>> Use multiple layers of tiles
                 if (sprite) {
                     Crafty.e('Platform')
                         .attr({
@@ -124,5 +152,45 @@ export function generateMap() {
                 }
             }
         }
+    });
+}
+
+function generateBackground(levelWidth, levelHeight, tileheight, tilewidth, layers, sprites) {
+    _.filter(layers, (l) => {
+        return l.name === 'background';
+    }).forEach((layer) => {
+        for (var x = 0; x < levelWidth; x++) {
+            for (var y = 0; y < levelHeight; y++) {
+                let sprite = sprites[layer.data[(levelWidth * y) + x]];
+                if (sprite) {
+                    Crafty.e('2D, Canvas, Phase')
+                        .attr({
+                            x: x * tilewidth,
+                            y: y * tileheight,
+                            w: tilewidth,
+                            h: tileheight,
+                            z: -1
+                        })
+                        .setGoodSprite(`${sprite}_good`)
+                        .setEvilSprite(`${sprite}_evil`);
+                }
+            }
+        }
+    });
+}
+
+function generateItems() {
+    _.filter(layers, (l) => {
+        return l.name === 'items';
+    }).forEach((layer) => {
+
+    });
+}
+
+function generateCollisions() {
+    _.filter(layers, (l) => {
+        return l.type === 'objectgroup';
+    }).forEach((layer) => {
+
     });
 }
