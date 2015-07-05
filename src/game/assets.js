@@ -59,6 +59,15 @@ let sprites = {
             sprite_item_evil: [1, 2],
             sprite_wall_evil: [0, 2]
         }
+    },
+
+    'assets/light.png': {
+        tile: 64,
+        tileh: 64,
+        map: {
+            sprite_light: [0, 0],
+            sprite_key: [1, 3]
+        }
     }
 };
 
@@ -87,8 +96,8 @@ export function generateMap() {
 
     [
         generateWalls,
-        generateBackground // ,
-        // generateItems,
+        generateBackground,
+        generateItems
         // generateCollisions
     ].forEach((f) => {
          f.apply(this, [
@@ -149,11 +158,21 @@ function generateBackground(levelWidth, levelHeight, tileheight, tilewidth, laye
     });
 }
 
-function generateItems() {
+function generateItems(levelWidth, levelHeight, tileheight, tilewidth, layers, sprites) {
     _.filter(layers, (l) => {
         return l.name === 'items';
     }).forEach((layer) => {
-
+        for (var x = 0; x < levelWidth; x++) {
+            for (var y = 0; y < levelHeight; y++) {
+                if (layer.data[(levelWidth * y) + x]) {
+                    Crafty.e('2D, Canvas, sprite_key')
+                        .attr({
+                            x: x * tilewidth,
+                            y: y * tileheight
+                        });
+                }
+            }
+        }
     });
 }
 
