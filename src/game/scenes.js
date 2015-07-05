@@ -20,7 +20,7 @@ function enterGame() {
 
     // Tools
     Crafty.e('Hook');
-    Crafty.e('Dash');
+    Crafty.e('Dash').attr({_intensity: 200});
 
     // Platforms
     generateMap();

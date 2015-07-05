@@ -221,7 +221,6 @@ function componentDash() {
     var that = {},
         init = function() {
             this.requires('Tool, RespondToMouseDown')
-                .attr({_intensity: 500})
                 .setCooldownDuration(2000)
                 .setProgressCallback((progress, total) => {
                     document.querySelector('#dash-ui .cooldown')
