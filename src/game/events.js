@@ -28,6 +28,15 @@ let globalEvents = {
             let velocity = entity.body.GetLinearVelocity();
             divDebug.innerHTML += `<br>Velocity<br>x: ${velocity.x}<br>y: ${velocity.y}`;
         }
+    },
+    playerdie: (ev) => {
+        var world = Crafty.box2D.world;
+
+        for (var b = world.GetBodyList(); b; b = b.GetNext()) {
+	    world.DestroyBody(b);
+	}
+
+        Crafty.scene('Game');
     }
 };
 

@@ -14,7 +14,8 @@ function componentPlayer() {
                 .onContact('Wave', hitWave);
         },
         hitWave = function(data) {
-
+            Crafty.stage.elem
+                .dispatchEvent(new Event('playerdie'));
         };
 
     that.init = init;
