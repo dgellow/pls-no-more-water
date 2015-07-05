@@ -85,16 +85,6 @@ export function generateMap() {
         tilewidth
     } = tilemap;
 
-<<<<<<< HEAD
-    layers.forEach((layer) => {
-        var firstCoord ;
-        var lastCoord;
-        var begunHitbox = false
-        for (var x = 0; x < width; x++) {
-            for (var y = 0; y < height; y++) {
-                let layerValue = layer.data[(width * y) + x],
-                    sprite = sprites[layerValue];
-=======
     [
         generateWalls,
         generateBackground // ,
@@ -119,10 +109,9 @@ function generateWalls(levelWidth, levelHeight, tileheight, tilewidth, layers, s
         for (var x = 0; x < levelWidth; x++) {
             for (var y = 0; y < levelHeight; y++) {
                 let sprite = sprites[layer.data[(levelWidth * y) + x]];
->>>>>>> Use multiple layers of tiles
                 if (sprite) {
                     Crafty.e('Platform')
-                        .attr({
+                        .setMetrics({
                             x: x * tilewidth,
                             y: y * tileheight,
                             w: tilewidth,
@@ -130,25 +119,6 @@ function generateWalls(levelWidth, levelHeight, tileheight, tilewidth, layers, s
                         })
                         .setGoodSprite(`${sprite}_good`)
                         .setEvilSprite(`${sprite}_evil`);
-                }
-                if (layerValue == 4 && !begunHitbox) {
-                    begunHitbox = true;
-                    firstCoord = {x: x * tilewidth, y: y * tileheight};
-                }
-                if (begunHitbox && layerValue != 4) {
-                    begunHitbox = false;
-                    lastCoord = {x: x * tilewidth, y: y * tileheight};
-                    Crafty.e('2D, Canvas, Box2D')
-                        .attr({x: firstCoord.x,
-                            y: firstCoord.y,
-                            w: lastCoord.x - firstCoord.x,
-                            h: lastCoord.y - firstCoord.y })
-                        .box2d({
-                            bodyType: 'static',
-                            density: 1.0,
-                            friction: 0,
-                            restitution: 0
-                        });
                 }
             }
         }
