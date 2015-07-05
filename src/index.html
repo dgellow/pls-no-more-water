@@ -2,6 +2,15 @@
     <head>
         <title>Please No More Water!</title>
         <style>
+         * {
+             -webkit-touch-callout: none;
+             -webkit-user-select: none;
+             -khtml-user-select: none;
+             -moz-user-select: none;
+             -ms-user-select: none;
+             user-select: none;
+         }
+
          #entity-debug {
              position: absolute;
              z-index: 99;
@@ -12,13 +21,29 @@
              background: rgba(219, 216, 156, 0.85098);
              display: none;
          }
+
+         #dash-ui {
+             position: absolute;
+             z-index: 99;
+             border-radius: 3px;
+             padding: 3px 10px;
+             font-size: 0.6rem;
+             font-family: monospace;
+             background: rgba(219, 216, 156, 0.85098);
+         }
         </style>
     </head>
     <body>
         <div id="entity-debug"></div>
+
         <h1>Please no more water!</h1>
 
-        <div id="cr-stage"></div>
+        <div id="cr-stage">
+            <div id="dash-ui">
+                <h2>DASH</h2>
+                <div class="cooldown">Usable</div>
+            </div>
+        </div>
 
         <p class="bottom">By <a href="https://github.com/zhaar">André Videla</a> and <a href="https://github.com/dgellow">Samuel El-Borai</a>.</p>
 

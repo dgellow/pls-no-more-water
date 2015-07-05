@@ -69,7 +69,8 @@ function componentCooldown() {
     var that = {},
         runCooldown = function(initialParam, endParams) {
             this.initialCallback(initialParam);
-            let interval = setInterval(progressCooldown, timeframe);
+            let interval = setInterval(progressCooldown.bind(this),
+                                       timeframe);
             setTimeout(() => {
                 clearInterval(interval);
                 this.currentDuration = this.cooldownDuration;
@@ -78,6 +79,8 @@ function componentCooldown() {
         },
         progressCooldown = function() {
             this.currentDuration -= timeframe;
+            this.progressCallback(this.getProgress(),
+                                  this.cooldownDuration);
         },
         setCooldownDuration = function(millis) {
             return this.attr({cooldownDuration: millis,
@@ -89,6 +92,9 @@ function componentCooldown() {
         setEndCallback = function(cb) {
             return this.attr({endCallback: cb});
         },
+        setProgressCallback = function(cb) {
+            return this.attr({progressCallback: cb});
+        },
         getProgress = function() {
             return this.currentDuration / this.cooldownDuration;
         };
@@ -97,6 +103,7 @@ function componentCooldown() {
     that.setCooldownDuration = setCooldownDuration;
     that.setInitialCallback = setInitialCallback;
     that.setEndCallback = setEndCallback;
+    that.setProgressCallback = setProgressCallback;
     that.getProgress = getProgress;
     return that;
 }
@@ -190,12 +197,7 @@ function componentTool() {
     var that = {},
         init = function() {
             this.requires('Keyboard, Cooldown')
-                .attr({
-                    _usable: true
-                })
-                .setCooldownDuration(2000)
-                .setInitialCallback(() => { console.log('tool unusable');this._usable = false })
-                .setEndCallback(() => { console.log('tool usable'); this._usable = true });
+                .attr({_usable: true});
         };
     that.init = init;
     return that;
@@ -220,6 +222,21 @@ function componentDash() {
         init = function() {
             this.requires('Tool, RespondToMouseDown')
                 .attr({_intensity: 500})
+                .setCooldownDuration(2000)
+                .setProgressCallback((progress, total) => {
+                    document.querySelector('#dash-ui .cooldown')
+                        .innerHTML = progress * (total / 1000);
+                })
+                .setInitialCallback(() => {
+                    this._usable = false;
+                    document.querySelector('#dash-ui .cooldown')
+                        .innerHTML = this.cooldownDuration / 1000;
+                })
+                .setEndCallback(() => {
+                    this._usable = true;
+                    document.querySelector('#dash-ui .cooldown')
+                        .innerHTML = 'Usable';
+                })
                 .setAction((ev) => {
                     if (this._usable) {
                         let mouseX = ev.offsetX - Crafty.viewport.x,
@@ -235,7 +252,7 @@ function componentDash() {
                         );
                         this.runCooldown();
                     }
-                })
+                });
         };
 
     that.init = init;
