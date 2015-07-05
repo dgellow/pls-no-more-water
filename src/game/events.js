@@ -36,6 +36,8 @@ let globalEvents = {
         }
     },
     playerdie: (ev) => {
+        Crafty.audio.play("you_are_dead");
+
         var world = Crafty.box2D.world;
 
         for (var b = world.GetBodyList(); b; b = b.GetNext()) {

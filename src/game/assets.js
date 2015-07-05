@@ -2,6 +2,10 @@
 import tilemap from '../assets/map.json';
 import _ from 'lodash';
 
+let audio = {
+    'you_are_dead': 'assets/you_are_dead.ogg'
+};
+
 let sprites = {
     'assets/hero-good.png': {
         tile: 25,
@@ -89,7 +93,7 @@ let sprites = {
     }
 };
 
-let objAssets = {sprites};
+let objAssets = {sprites, audio};
 export {objAssets};
 
 export function generateMap() {
