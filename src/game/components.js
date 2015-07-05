@@ -6,14 +6,23 @@ import {swapSprite} from './helpers';
 function componentPlayer() {
     var that = {},
         init = function() {
-            this.requires('Solid, sprite_player_good, Phase, Controllable')
+            this.requires('Solid, sprite_player_good, Phase, Controllable, Collector')
                 .setEvilSprite('sprite_player_evil')
                 .setGoodSprite('sprite_player_good')
-                .onContact('Wave', hitWave);
+                .onContact('Wave', hitWave)
+                .onContact('LevelGoal', hitLevelGoal);
+        },
+        collect = function(data) {
+            console.log('onContact with collectible', data);
+            Crafty.stage.elem.dispatchEvent(new Event('collectItem'));
         },
         hitWave = function(data) {
             Crafty.stage.elem
                 .dispatchEvent(new Event('playerdie'));
+        },
+        hitLevelGoal = function(data) {
+            Crafty.stage.elem
+                .dispatchEvent(new Event('endgame'));
         };
 
     that.init = init;
@@ -316,6 +325,39 @@ function componentDash() {
 }
 
 Crafty.c('Dash', componentDash());
+
+function componentCollectible() {
+    var init = function() {
+            this.requires('Solid')
+                .onContact('Player', applyCallback);
+        },
+        setHitCallback = function(fn) {
+            return this.attr({_hitcb: fn});
+        },
+        setCollector = function(c) {
+            return this.attr({_collector: c})
+        },
+        applyCallback = function() {
+            console.log('collectible hit');
+            this._collector.collectItem(this);
+            this._hitcb(this);
+        };
+    return {init, setHitCallback, setCollector};
+}
+
+Crafty.c('Collectible', componentCollectible());
+
+function componentCollector() {
+    var init = function() {
+            this.attr({_collectedItems: []});
+        },
+        collectItem = function(item) {
+            return this._collectedItems.push(item);
+        };
+    return {init, collectItem};
+}
+
+Crafty.c('Collector', componentCollector());
 
 function componentWave() {
     var that = {},

@@ -1,6 +1,7 @@
 /* jshint esnext: true */
 import tilemap from '../assets/map.json';
 import _ from 'lodash';
+import {player} from './game';
 
 let audio = {
     'you_are_dead': 'assets/you_are_dead.ogg',
@@ -192,16 +193,21 @@ function generateBackground(levelWidth, levelHeight, tileheight, tilewidth, laye
 }
 
 function generateItems(levelWidth, levelHeight, tileheight, tilewidth, layers, sprites) {
+    let player = Crafty('Player');
     _.filter(layers, (l) => {
         return l.name === 'items';
     }).forEach((layer) => {
         for (var x = 0; x < levelWidth; x++) {
             for (var y = 0; y < levelHeight; y++) {
                 if (layer.data[(levelWidth * y) + x]) {
-                    Crafty.e('2D, Canvas, sprite_key')
-                        .attr({
+                    Crafty.e('2D, Canvas, sprite_key, Collectible, Solid')
+                        .setMetrics({
                             x: x * tilewidth,
                             y: y * tileheight
+                        })
+                        .setCollector(player)
+                        .setHitCallback((entity) => {
+                            entity.destroy();
                         });
                 }
             }

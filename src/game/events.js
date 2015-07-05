@@ -3,6 +3,10 @@ let Game = require('./game');
 import {getEntitiesAt} from './helpers';
 
 let globalEvents = {
+    collectItem: (ev) => {
+        console.log('item collected');
+        Crafty.trigger('HitOn', ev);
+    },
     mousedown: (ev) => {
         // left click
         if (ev.which === 1) {
@@ -52,6 +56,15 @@ let globalEvents = {
             Crafty.audio.play('resurection');
             Crafty.scene('Game');
         }, 1000);
+    },
+    endgame: (ev) => {
+        var world = Crafty.box2D.world;
+
+        for (var b = world.GetBodyList(); b; b = b.GetNext()) {
+	    world.DestroyBody(b);
+	}
+
+        Crafty.scene('End');
     }
 };
 
