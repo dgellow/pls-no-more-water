@@ -3,19 +3,23 @@ let Game = require('./game');
 import {getEntitiesAt} from './helpers';
 
 let globalEvents = {
-    keydown: (e) => {
-        if (e.shiftKey) {
+    mousedown: (ev) => {
+        // left click
+        if (ev.which === 1) {
+            Crafty.trigger('customMouseDown', ev);
+        }
+
+        // right click
+        if (ev.which === 3) {
             let phase = Game.shiftPhase();
             Crafty.trigger('changePhase', phase);
             if (phase === 'evil') {
-                Crafty.background('#422c14 url(assets/background_evil.png) no-repeat');
+                Crafty.background('#422c14 url(assets/background_evil.png) repeat-x');
             } else {
-                Crafty.background('#87b7e3 url(assets/background_good.png) no-repeat');
+                Crafty.background('#87b7e3 url(assets/background_good.png) repeat-x');
             }
         }
-    },
-    mousedown: (ev) => {
-        Crafty.trigger('customMouseDown', ev);
+
     },
     mousemove: (ev) => {
         var divDebug = document.getElementById('entity-debug');
